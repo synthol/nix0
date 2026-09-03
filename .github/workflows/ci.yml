@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate version
+        run: |
+          version=$(<VERSION)
+
+          [[ $version =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || {
+            printf 'VERSION must contain a semantic version such as 1.0.0\n' >&2
+            exit 1
+          }
+
+          if [[ ${GITHUB_REF_TYPE:-} == tag && ${GITHUB_REF_NAME:-} != "$version" ]]; then
+            printf 'Tag %s must match VERSION %s\n' "$GITHUB_REF_NAME" "$version" >&2
+            exit 1
+          fi
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          enable_kvm: false
+
+      - name: Check source
+        run: |
+          bash -n scripts/*.sh
+
+          nix shell \
+            --inputs-from . \
+            --no-update-lock-file \
+            --no-write-lock-file \
+            'nixpkgs#shellcheck' \
+            'nixpkgs#lua' \
+            --command bash -c \
+            'shellcheck scripts/*.sh && luac -p modules/home/hyprland/*.lua'
+
+      - name: Check flake
+        run: |
+          nix flake check \
+            --no-build \
+            --no-update-lock-file \
+            --no-write-lock-file
+
+      - name: Evaluate system
+        run: |
+          nix eval \
+            --raw \
+            --no-update-lock-file \
+            --no-write-lock-file \
+            .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath \
+            >/dev/null

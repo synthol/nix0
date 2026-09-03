@@ -1,0 +1,49 @@
+{
+  "installDisk": "/dev/disk/by-id/REPLACE-ME",
+  "allowDiscards": false,
+  "username": "user",
+  "hostName": "nixos",
+  "timeZone": "UTC",
+  "locale": "en_US.UTF-8",
+  "xkbLayout": "us",
+  "xkbVariant": "",
+  "git": {
+    "name": "",
+    "email": ""
+  },
+  "battery": {
+    "generic": {
+      "enable": false
+    },
+    "acerWmi": {
+      "enable": false
+    }
+  },
+  "hardwareProfiles": {
+    "nvidia": {
+      "enable": false,
+      "branch": "stable",
+      "open": null,
+      "powerManagement": {
+        "enable": false,
+        "finegrained": false
+      },
+      "prime": {
+        "intelBusId": "",
+        "amdgpuBusId": "",
+        "nvidiaBusId": "",
+        "offload": {
+          "enable": false
+        }
+      }
+    }
+  },
+  "gpuPassthrough": {
+    "enable": false,
+    "pciAddresses": [],
+    "lookingGlass": {
+      "enable": false,
+      "memoryMiB": 64
+    }
+  }
+}
