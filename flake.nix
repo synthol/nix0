@@ -36,16 +36,6 @@
       ...
     }:
     let
-      versionMatch = builtins.match "((0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*))\n?" (
-        builtins.readFile ./VERSION
-      );
-
-      version =
-        if versionMatch == null then
-          throw "VERSION must contain a semantic version such as 0.0.0"
-        else
-          builtins.head versionMatch;
-
       settings = builtins.fromJSON (builtins.readFile ./settings.json);
       system = "x86_64-linux";
       firefoxAddons = inputs.firefox-addons.packages.${system};
@@ -73,7 +63,7 @@
       diskoConfigurations.nixos = import ./host/disko.nix { inherit settings; };
 
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit firefoxAddons settings version; };
+        specialArgs = { inherit firefoxAddons settings; };
 
         modules = [
           { nixpkgs.hostPlatform = system; }
@@ -118,26 +108,6 @@
             export INSTALL_XKB_RULES=${pkgs.xkeyboard_config}/share/X11/xkb/rules/base.lst
 
             exec ${pkgs.bash}/bin/bash ${./scripts/install.sh} "$@"
-          '';
-        };
-
-        update = pkgs.writeShellApplication {
-          name = "nix0-update";
-
-          runtimeInputs = [
-            pkgs.coreutils
-            pkgs.curl
-            pkgs.jq
-            pkgs.nix
-            pkgs.rsync
-            pkgs.util-linux
-          ];
-
-          text = ''
-            export UPDATE_SOURCE=${self}
-            export UPDATE_VERSION=${version}
-
-            exec ${pkgs.bash}/bin/bash ${./scripts/update.sh} "$@"
           '';
         };
 

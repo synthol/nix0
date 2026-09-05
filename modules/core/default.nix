@@ -7,7 +7,6 @@
     ./localisation.nix
     ./networking.nix
     ./nix.nix
-    ./release.nix
     ./stylix.nix
     ./users.nix
     ./virtualisation.nix

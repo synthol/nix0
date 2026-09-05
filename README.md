@@ -25,7 +25,7 @@
 - **Theming:** Coordinated styling through Stylix
 - **Vim-style navigation:** Unified keyboard controls across Hyprland, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
-- **Automation:** Hardware-aware installer and release updater
+- **Installation:** Hardware-aware installer using NixOS Facter
 - **Virtualisation:** libvirt/QEMU/KVM with virt-manager and optional VFIO and Looking Glass
 
 ## Screenshots
@@ -132,20 +132,6 @@ sudo nixos-rebuild switch --flake 'path:/etc/nixos#nixos'
 When enabling the NVIDIA profile, set `hardwareProfiles.nvidia.open` to `true`
 or `false`; leaving it `null` will fail evaluation with NVIDIA driver versions
 560 or newer.
-
-## Updates
-
-Update to the latest stable nix0 release:
-
-```sh
-sudo nix run --no-write-lock-file 'path:/etc/nixos#update'
-```
-
-The updater validates the release, preserves user settings, keeps a backup, and
-activates the new configuration.
-
-The automatic updater replaces managed configuration files. If you modify
-them, use a fork or merge future releases manually.
 
 ## Bindings
 
