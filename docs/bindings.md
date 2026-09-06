@@ -26,7 +26,8 @@ consistent across keyboard layouts.
 | `Alt+Shift+Print` | Active-window rectangle | Clipboard |
 
 Screenshots are saved to the XDG Pictures directory as
-`Screenshot-YYYYMMDD-HHMMSS.png`. Active-window captures may include overlapping windows.
+`Screenshot-YYYYMMDD-HHMMSS-NNNNNNNNN.png`.
+Active-window captures may include overlapping windows.
 
 ## Window state
 
