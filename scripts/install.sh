@@ -34,6 +34,7 @@ warn() {
 
 cleanup() {
   local status=$?
+  local cleanup_failed=false
 
   trap - EXIT
   set +e
@@ -46,30 +47,39 @@ cleanup() {
     "$INSTALL_DISKO" \
       --mode unmount \
       --flake "$stage_dir#nixos" \
-      --root-mountpoint "$mount_point"
+      --root-mountpoint "$mount_point" || cleanup_failed=true
   fi
 
   if [[ -n ${mount_point:-} &&
     $mount_point == /mnt/nixos-install.* &&
     -d $mount_point ]]; then
     if mountpoint -q -- "$mount_point"; then
-      umount -R -- "$mount_point"
+      umount -R -- "$mount_point" || cleanup_failed=true
     fi
-    rmdir -- "$mount_point"
+    rmdir -- "$mount_point" || cleanup_failed=true
   fi
 
   if [[ -n ${work_dir:-} &&
     $work_dir == /tmp/nixos-install.* &&
     -d $work_dir ]]; then
-    chmod -R u+w -- "$work_dir"
-    rm -rf -- "$work_dir"
+    chmod -R u+w -- "$work_dir" || cleanup_failed=true
+    rm -rf -- "$work_dir" || cleanup_failed=true
+  fi
+
+  if [[ $cleanup_failed == true ]]; then
+    if ((status == 0)) && [[ ${disko_started:-false} == true ]]; then
+      warn "Installation completed, but cleanup reported errors"
+    else
+      warn "Installer cleanup reported errors"
+    fi
+    ((status != 0)) || status=1
   fi
 
   if ((status == 0)) && [[ ${disko_started:-false} == true ]]; then
-    printf '\nInstallation succeeded.\n'
+    printf '\nInstallation and cleanup succeeded.\n'
     printf 'Keep the NixOS installation media connected for now.\n'
     printf 'Run "sudo systemctl poweroff". After the computer is fully off, remove the media and power it on.\n'
-    printf '\nAfter booting and logging in, press Super+T (Windows+T) to open a terminal.\n'
+    printf '\nAfter booting and logging in, press Super+T (Windows/Meta+T) to open a terminal.\n'
     printf 'Run "nmtui connect" if you need to connect to a network.\n'
   fi
 
@@ -217,17 +227,28 @@ time_zone_choices() {
   ' "$INSTALL_TZDIR/zone1970.tab"
 }
 
-apply_console_keymap() {
+prepare_keyboard() {
   local console
 
-  console=$(tty 2>/dev/null) || return 0
-  [[ $console =~ ^/dev/tty[0-9]+$ ]] || return 0
+  console=${SUDO_TTY:-$(tty 2>/dev/null)} ||
+    die "Cannot determine the installation terminal"
 
-  "$INSTALL_CKBCOMP" \
-    -layout "$xkb_layout" \
-    -variant "$xkb_variant" |
-    "$INSTALL_LOADKEYS" --quiet ||
-    die "Could not apply the selected keyboard layout"
+  if [[ $console =~ ^/dev/tty[1-9][0-9]*$ ]]; then
+    "$INSTALL_CKBCOMP" \
+      -layout "$xkb_layout" \
+      -variant "$xkb_variant" |
+      "$INSTALL_LOADKEYS" --quiet --console "$console" ||
+      die "Could not apply the selected keyboard layout"
+  else
+    printf '\nSelected keyboard layout: %s (variant: %s)\n' \
+      "$xkb_layout" "${xkb_variant:-default}"
+    printf '%s\n' \
+      'The installer cannot apply the keyboard layout in this terminal.' \
+      'Set the keyboard layout and variant used to type here to match before continuing.'
+    "$INSTALL_GUM" confirm --default=false \
+      "Do your keyboard layout and variant match this selection?" ||
+      die "Keyboard layout confirmation was cancelled"
+  fi
 }
 
 default_username=$(read_setting '.username')
@@ -486,7 +507,7 @@ unset default_xkb_choice xkb_choice
 validate_xkb_layout "$xkb_layout"
 validate_xkb_variant "$xkb_variant"
 validate_xkb_selection
-apply_console_keymap
+prepare_keyboard
 
 locale=$(
   {

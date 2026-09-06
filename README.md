@@ -63,6 +63,13 @@ Create and boot installation media using an official
 sudo nix --extra-experimental-features 'nix-command flakes' run 'github:synthol/nix0/1.0.0#install'
 ```
 
+When installing from a graphical terminal, set the live desktop's keyboard
+layout and variant to match your installer selection before confirming the
+keyboard prompt. On a Linux virtual console, the installer applies the
+selection automatically.
+
+To use a Linux virtual console, press `Ctrl+Alt+F3`.
+
 After installation, shut down using the command shown by the installer,
 remove the installation media, then power on the computer. Unlock the disk with
 your encryption passphrase and log in; Hyprland starts automatically.
