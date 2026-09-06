@@ -10,8 +10,8 @@ nix run 'path:/etc/nixos#vfio-info'
 ```
 
 If it reports inactive IOMMU or unavailable groups, enable IOMMU for a normal
-boot before selecting devices. nix0 adds its IOMMU kernel parameter only in
-the passthrough specialisation:
+boot before selecting devices. On Intel, nix0 adds `intel_iommu=on` only in the
+passthrough specialisation:
 
 1. Enable VT-d (Intel) or AMD-Vi/IOMMU (AMD) in firmware; CPU virtualisation
    alone is insufficient.

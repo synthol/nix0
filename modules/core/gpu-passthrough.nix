@@ -200,13 +200,7 @@ let
 
   cpuFeatures = lib.unique (lib.concatMap (cpu: cpu.features or [ ]) (report.hardware.cpu or [ ]));
 
-  iommuKernelParameter =
-    if lib.elem "vmx" cpuFeatures then
-      "intel_iommu=on"
-    else if lib.elem "svm" cpuFeatures then
-      "amd_iommu=on"
-    else
-      null;
+  iommuKernelParameter = if lib.elem "vmx" cpuFeatures then "intel_iommu=on" else null;
 
   selectedNvidia = lib.any isNvidia selectedGraphics;
   remainingNvidia = lib.any isNvidia remainingGraphics;
@@ -256,6 +250,10 @@ in
       message = "gpuPassthrough.pciAddresses must select at least one graphics device.";
     }
     {
+      assertion = remainingGraphics != [ ];
+      message = "GPU passthrough requires at least one graphics device for the host.";
+    }
+    {
       assertion = selectedBridges == [ ];
       message = ''
         gpuPassthrough.pciAddresses must not include PCI bridges.
@@ -265,7 +263,7 @@ in
       '';
     }
     {
-      assertion = iommuKernelParameter != null;
+      assertion = lib.elem "vmx" cpuFeatures || lib.elem "svm" cpuFeatures;
       message = "Facter did not detect Intel VMX or AMD SVM CPU support.";
     }
     {
