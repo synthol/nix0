@@ -16,7 +16,7 @@ jobs:
   check:
     name: Validate
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 90 || 30 }}
 
     steps:
       - name: Checkout
@@ -56,3 +56,13 @@ jobs:
             --no-write-lock-file \
             .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath \
             >/dev/null
+
+      - name: Build system
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          nix build \
+            --no-link \
+            --print-build-logs \
+            --no-update-lock-file \
+            --no-write-lock-file \
+            .#nixosConfigurations.nixos.config.system.build.toplevel
