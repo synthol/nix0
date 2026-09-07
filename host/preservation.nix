@@ -52,7 +52,7 @@ in
     ];
   };
 
-  services.journald.extraConfig = "SystemMaxUse=256M";
+  services.journald.settings.Journal.SystemMaxUse = "256M";
 
   systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 }
