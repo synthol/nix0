@@ -60,7 +60,7 @@ Create and boot installation media using an official
 [NixOS ISO](https://nixos.org/download/), then connect to the internet and run:
 
 ```sh
-sudo nix --extra-experimental-features 'nix-command flakes' run 'github:synthol/nix0/1.0.0#install'
+sudo nix --extra-experimental-features 'nix-command flakes' run 'github:synthol/nix0/2.0.0#install'
 ```
 
 When installing from a graphical terminal, set the live desktop's keyboard
