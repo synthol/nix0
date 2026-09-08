@@ -19,6 +19,7 @@ readonly MIN_DISK_BYTES=$((32 * 1024 * 1024 * 1024))
 readonly YESCRYPT_RE='^\$y\$[./A-Za-z0-9]+\$[./A-Za-z0-9]{0,86}\$[./A-Za-z0-9]{43}$'
 
 disko_started=false
+installation_started_at=0
 stage_dir=
 work_dir=
 mount_point=
@@ -35,6 +36,7 @@ warn() {
 cleanup() {
   local status=$?
   local cleanup_failed=false
+  local elapsed_seconds
 
   trap - EXIT
   set +e
@@ -76,11 +78,29 @@ cleanup() {
   fi
 
   if ((status == 0)) && [[ ${disko_started:-false} == true ]]; then
-    printf '\nInstallation and cleanup succeeded.\n'
-    printf 'Keep the NixOS installation media connected for now.\n'
-    printf 'Run "sudo systemctl poweroff". After the computer is fully off, remove the media and power it on.\n'
+    elapsed_seconds=$((SECONDS - installation_started_at))
+    printf '\nInstallation and cleanup succeeded in %dm %ds.\n' \
+      "$((elapsed_seconds / 60))" "$((elapsed_seconds % 60))"
+    printf 'Keep the NixOS installation media connected until the computer is fully off.\n'
+    printf 'Then remove the media and power it on.\n'
     printf '\nAfter booting and logging in, press Super+T (Windows/Meta+T) to open a terminal.\n'
     printf 'Run "nmtui connect" if you need to connect to a network.\n'
+    printf '\n'
+
+    if "$INSTALL_GUM" choose \
+      --header "" \
+      --height 1 \
+      --cursor "" \
+      --cursor.foreground 230 \
+      --cursor.background 212 \
+      "Power off now" >/dev/null; then
+      if systemctl poweroff; then
+        exit "$status"
+      fi
+      warn "Could not power off automatically"
+    fi
+
+    printf '\nRun "sudo systemctl poweroff" when ready.\n'
   fi
 
   exit "$status"
@@ -165,19 +185,36 @@ validate_xkb_selection() {
 select_value() {
   local header=$1
   local selected=${2:-}
-  local arguments=(
-    filter
-    --header "$header"
-    --height 15
-    --limit 1
-    --placeholder "Type to search"
-  )
 
-  if [[ -n $selected ]]; then
-    arguments+=(--selected "$selected")
+  awk -v selected="$selected" '
+    BEGIN {
+      if (selected != "")
+        print selected
+    }
+
+    $0 != selected
+  ' |
+    "$INSTALL_GUM" filter \
+      --header "$header" \
+      --height 15 \
+      --limit 1 \
+      --placeholder "Type to search"
+}
+
+input_value() {
+  local header=$1
+  local input_error=$2
+  shift 2
+
+  if [[ -n $input_error ]]; then
+    header="Warning: $input_error"$'\n\n'"$header"
   fi
 
-  "$INSTALL_GUM" "${arguments[@]}"
+  "$INSTALL_GUM" input \
+    --header "$header" \
+    --placeholder "" \
+    --char-limit 0 \
+    "$@"
 }
 
 locale_choices() {
@@ -229,6 +266,7 @@ time_zone_choices() {
 
 prepare_keyboard() {
   local console
+  local keyboard_label
 
   console=${SUDO_TTY:-$(tty 2>/dev/null)} ||
     die "Cannot determine the installation terminal"
@@ -240,13 +278,14 @@ prepare_keyboard() {
       "$INSTALL_LOADKEYS" --quiet --console "$console" ||
       die "Could not apply the selected keyboard layout"
   else
-    printf '\nSelected keyboard layout: %s (variant: %s)\n' \
-      "$xkb_layout" "${xkb_variant:-default}"
-    printf '%s\n' \
-      'The installer cannot apply the keyboard layout in this terminal.' \
-      'Set the keyboard layout and variant used to type here to match before continuing.'
+    keyboard_label="$xkb_layout_name keyboard layout"
+
+    if [[ -n $xkb_variant ]]; then
+      keyboard_label+=" (variant: $xkb_variant)"
+    fi
+
     "$INSTALL_GUM" confirm --default=false \
-      "Do your keyboard layout and variant match this selection?" ||
+      "Does the live desktop use the $keyboard_label?" ||
       die "Keyboard layout confirmation was cancelled"
   fi
 }
@@ -497,11 +536,11 @@ default_xkb_choice=$(
 xkb_choice=$(
   xkb_layout_choices |
     select_value \
-      "Select keyboard layout (default highlighted: $default_xkb_layout | Up/Down changes selection | Enter confirms)" \
+      "Select keyboard layout" \
       "$default_xkb_choice"
 ) || die "Keyboard layout selection was cancelled"
 
-xkb_layout=${xkb_choice%%[[:space:]]*}
+read -r xkb_layout xkb_layout_name <<<"$xkb_choice"
 unset default_xkb_choice xkb_choice
 
 validate_xkb_layout "$xkb_layout"
@@ -516,7 +555,7 @@ locale=$(
   } |
     sort -u |
     select_value \
-      "Select locale (default highlighted: $default_locale | Up/Down changes selection | Enter confirms)" \
+      "Select locale" \
       "$default_locale"
 ) || die "Locale selection was cancelled"
 
@@ -529,7 +568,7 @@ time_zone=$(
   } |
     sort -u |
     select_value \
-      "Select timezone (default highlighted: $default_time_zone | Up/Down changes selection | Enter confirms)" \
+      "Select timezone" \
       "$default_time_zone"
 ) || die "Timezone selection was cancelled"
 
@@ -541,7 +580,7 @@ mapfile -t available_disks < <(disk_choices)
 
 disk_choice=$(
   printf '%s\n' "${available_disks[@]}" |
-    select_value "Select target disk (Up/Down changes selection | Enter confirms)"
+    select_value "Select target disk"
 ) || die "Disk selection was cancelled"
 
 disk_reference=${disk_choice##*$'\t'}
@@ -549,45 +588,38 @@ unset available_disks disk_choice
 
 target_disk=$(resolve_target_disk "$disk_reference")
 check_disk_safety "$target_disk"
-printf '\nDiscard/TRIM lets storage reclaim unused blocks, but allowing requests through LUKS reveals allocation patterns.\n'
 
-while :; do
-  printf 'Allow discard/TRIM requests through LUKS? [y/N] (press Enter for no): ' >&2
-  IFS= read -r trim_answer || die "Input ended unexpectedly"
+trim_answer=$(
+  "$INSTALL_GUM" choose \
+    --header $'Discard/TRIM lets storage reclaim unused blocks.\nAllowing it through LUKS reveals allocation patterns.\n\nAllow discard/TRIM requests through LUKS?' \
+    --height 2 \
+    --selected "No" \
+    "Yes" "No"
+) || die "Discard/TRIM selection was cancelled"
 
-  case ${trim_answer,,} in
-    y | yes)
-      allow_discards=true
-      break
-      ;;
-    "" | n | no)
-      break
-      ;;
-    *)
-      warn "Type yes or no (or press Enter for no)"
-      ;;
-  esac
-done
+if [[ $trim_answer == Yes ]]; then
+  allow_discards=true
+fi
 
 unset trim_answer
 
 initial_identity=$(disk_identity "$target_disk")
 [[ $initial_identity != null ]] || die "Cannot read target disk identity"
 
+input_error=
 while :; do
-  printf 'Username [%s] (press Enter to use the default): ' \
-    "$default_username" >&2
-  IFS= read -r username || die "Input ended unexpectedly"
+  username=$(input_value "Username" "$input_error" --value "$default_username") ||
+    die "Username input was cancelled"
   username=${username:-$default_username}
 
   if [[ ! $username =~ ^[a-z_][a-z0-9_-]{0,30}$ ]]; then
-    warn "Username must start with a lowercase letter or underscore and contain only lowercase letters, digits, underscores, or hyphens (maximum 31 characters)"
+    input_error=$'Username must start with a lowercase letter or underscore.\nUse lowercase letters, digits, underscores, or hyphens; maximum 31 characters.'
     continue
   fi
 
   case $username in
     root | nobody | nixbld*)
-      warn "Reserved username: $username"
+      input_error="Reserved username: $username"
       continue
       ;;
   esac
@@ -595,40 +627,35 @@ while :; do
   break
 done
 
+input_error=
 while :; do
-  printf 'Hostname [%s] (press Enter to use the default): ' \
-    "$default_host_name" >&2
-  IFS= read -r host_name || die "Input ended unexpectedly"
+  host_name=$(input_value "Hostname" "$input_error" --value "$default_host_name") ||
+    die "Hostname input was cancelled"
   host_name=${host_name:-$default_host_name}
 
   if [[ $host_name =~ ^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$ ]]; then
     break
   fi
 
-  warn "Hostname must contain 1-63 lowercase letters, digits, or hyphens and cannot start or end with a hyphen"
+  input_error=$'Hostname must contain 1-63 lowercase letters, digits, or hyphens.\nIt cannot start or end with a hyphen.'
 done
 
+input_error=
 while :; do
-  if ! IFS= read -r -s -p "Password for $username: " password; then
-    printf '\n' >&2
-    die "Input ended unexpectedly"
-  fi
-  printf '\n' >&2
+  password=$(input_value "Password for $username" "$input_error" --password) ||
+    die "Password input was cancelled"
 
-  if ! IFS= read -r -s -p 'Confirm password: ' password_confirmation; then
-    printf '\n' >&2
-    die "Input ended unexpectedly"
-  fi
-  printf '\n' >&2
+  password_confirmation=$(input_value "Confirm password" "" --password) ||
+    die "Password confirmation was cancelled"
 
   if [[ -z $password ]]; then
-    warn "Password must not be empty"
+    input_error="Password must not be empty"
     unset password password_confirmation
     continue
   fi
 
   if [[ $password != "$password_confirmation" ]]; then
-    warn "Passwords do not match"
+    input_error="Passwords do not match"
     unset password password_confirmation
     continue
   fi
@@ -642,6 +669,8 @@ while :; do
   validate_yescrypt "$password_hash"
   break
 done
+
+unset input_error
 
 [[ ! -L /mnt ]] || die "/mnt must not be a symbolic link"
 install -d -m 0755 -- /mnt
@@ -686,7 +715,7 @@ printf '%s\n' "$password_hash" >"$passwords_dir/$username"
 chmod 0600 -- "$passwords_dir/$username"
 unset password_hash
 
-printf '\nValidating the complete NixOS configuration...\n\n'
+printf '\nValidating the complete NixOS configuration...\n'
 
 nix \
   --extra-experimental-features "nix-command flakes" \
@@ -701,12 +730,13 @@ printf '\nThe selected disk is:\n\n'
 show_disk_identity "$disk_reference" "$initial_identity"
 printf '\nAll existing data on this disk will be erased.\n'
 
-confirmation_text="ERASE $(basename -- "$disk_reference")"
-printf 'Type exactly "%s" to continue: ' "$confirmation_text" >&2
-IFS= read -r confirmation || die "Input ended unexpectedly"
+confirmation=$(input_value "Type ERASE to erase the disk shown above" "") ||
+  die "Disk erasure confirmation was cancelled"
 
-[[ $confirmation == "$confirmation_text" ]] ||
+[[ $confirmation == ERASE ]] ||
   die "Confirmation did not match; nothing was erased"
+
+installation_started_at=$SECONDS
 
 rechecked_disk=$(resolve_target_disk "$disk_reference")
 [[ $rechecked_disk == "$target_disk" ]] ||

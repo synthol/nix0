@@ -32,7 +32,7 @@ Familiarity with NixOS and declarative configuration is assumed.
 - **Theming:** Coordinated styling through Stylix
 - **Vim-style navigation:** Unified keyboard controls across Hyprland, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
-- **Installation:** Hardware-aware installer using NixOS Facter
+- **Installation:** Guided installer with Gum and NixOS Facter
 - **Virtualisation:** libvirt/QEMU/KVM with virt-manager and optional VFIO and Looking Glass
 
 ## Screenshots
@@ -63,16 +63,16 @@ Create and boot installation media using an official
 sudo nix --extra-experimental-features 'nix-command flakes' run 'github:synthol/nix0/2.0.0#install'
 ```
 
-When installing from a graphical terminal, set the live desktop's keyboard
-layout and variant to match your installer selection before confirming the
-keyboard prompt. On a Linux virtual console, the installer applies the
-selection automatically.
+When installing from a graphical terminal, match the live desktop's keyboard
+layout and variant to the installer prompt before confirming. The standard
+variant is used when none is shown. On a Linux virtual console, the installer
+applies the selection automatically.
 
 To use a Linux virtual console, press `Ctrl+Alt+F3`.
 
-After installation, shut down using the command shown by the installer,
-remove the installation media, then power on the computer. Unlock the disk with
-your encryption passphrase and log in; Hyprland starts automatically.
+After installation, select **Power off now**. Once the computer is fully off,
+remove the installation media, then power it on. Unlock the disk with your
+encryption passphrase and log in; Hyprland starts automatically.
 Press `Super+T` to open a terminal.
 
 The installer does not configure NVIDIA automatically; see
