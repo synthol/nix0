@@ -23,7 +23,8 @@
 nix0 provides a minimal system you can use as is or extend. It centres on
 keyboard control and terminal workflows, omitting common desktop components
 such as an application launcher and file manager. It reduces visual
-distractions with a black background and disables blur, gaps, and animations.
+distractions with a black background and disables borders, blur, gaps, and
+animations.
 
 For tools you only need occasionally, consider using `nix run` or `nix shell`
 to keep the declared package set small. Familiarity with NixOS is recommended
