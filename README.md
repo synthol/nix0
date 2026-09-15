@@ -20,11 +20,14 @@
   </p>
 </div>
 
-nix0 provides a minimal system you can use as is or expand. It centres on
+nix0 provides a minimal system you can use as is or extend. It centres on
 keyboard control and terminal workflows, omitting common desktop components
 such as an application launcher and file manager. It reduces visual
 distractions with a black background and disables blur, gaps, and animations.
-Familiarity with NixOS and declarative configuration is assumed.
+
+For tools you only need occasionally, consider using `nix run` or `nix shell`
+to keep the declared package set small. Familiarity with NixOS is recommended
+for maintaining and modifying the system.
 
 ## Features
 
@@ -33,6 +36,7 @@ Familiarity with NixOS and declarative configuration is assumed.
 - **Vim-style navigation:** Unified keyboard controls across Hyprland, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
 - **Installation:** Guided installer with Gum and NixOS Facter
+- **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA profiles and GPU passthrough
 - **Virtualisation:** libvirt/QEMU/KVM with virt-manager and optional VFIO and Looking Glass
 
 ## Screenshots
