@@ -22,14 +22,14 @@
       base05 = "C8C8C8";
       base06 = "E0E0E0";
       base07 = "FFFFFF";
-      base08 = "FF0000";
-      base09 = "D75F00";
-      base0A = "D7AF00";
-      base0B = "00D700";
-      base0C = "00AFAF";
-      base0D = "0087D7";
-      base0E = "D700D7";
-      base0F = "AF5F00";
+      base08 = "F7768E";
+      base09 = "FF9E64";
+      base0A = "E0AF68";
+      base0B = "9ECE6A";
+      base0C = "449DAB";
+      base0D = "7AA2F7";
+      base0E = "AD8EE6";
+      base0F = "B59064";
     };
   };
 }
