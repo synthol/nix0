@@ -2,11 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +21,7 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
       home-manager,
@@ -38,7 +33,6 @@
     let
       settings = builtins.fromJSON (builtins.readFile ./settings.json);
       system = "x86_64-linux";
-      firefoxAddons = inputs.firefox-addons.packages.${system};
       pkgs = nixpkgs.legacyPackages.${system};
 
       localeList =
@@ -63,7 +57,7 @@
       diskoConfigurations.nixos = import ./host/disko.nix { inherit settings; };
 
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit firefoxAddons settings; };
+        specialArgs = { inherit settings; };
 
         modules = [
           { nixpkgs.hostPlatform = system; }

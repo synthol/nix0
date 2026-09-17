@@ -14,15 +14,17 @@ is preserved under `/persist` by
 | `/persist/passwords` | Installer-created login password hashes survive |
 | Desktop, Documents, Downloads, Music, Pictures, Projects, Public, Templates, Videos | Preserved home directories |
 | `.ssh` and `.local/state/wireplumber` | Preserved home state |
-| Other home data, including browser profiles, shell history, and `.cache` | Resets unless added to persistence |
+| `.config/BraveSoftware/Brave-Origin` | Brave Origin profiles, extensions, and settings survive |
+| Other home data, including shell history and `.cache` | Resets unless added to persistence |
 
 ## Preserving additional data
 
-In `/etc/nixos/host/preservation.nix`, add relative home-directory paths
-under `users.${settings.username}.directories`, for example:
+In `/etc/nixos/host/preservation.nix`, add new paths relative to your home
+directory under `users.${settings.username}.directories`. The Brave entry
+below is already included and illustrates the format:
 
 ```nix
-(privateDirectory ".config/librewolf")
+(privateDirectory ".config/BraveSoftware/Brave-Origin")
 ```
 
 System directories belong in `preservation.preserveAt."/persist".directories`;

@@ -1,4 +1,4 @@
-{ firefoxAddons, settings, ... }:
+{ settings, ... }:
 {
   imports = [
     ../modules/core
@@ -13,7 +13,7 @@
   networking.hostName = settings.hostName;
 
   home-manager = {
-    extraSpecialArgs = { inherit firefoxAddons settings; };
+    extraSpecialArgs = { inherit settings; };
 
     useGlobalPkgs = true;
     useUserPackages = true;

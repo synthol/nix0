@@ -5,7 +5,7 @@
 
     mimeApps = {
       enable = true;
-      defaultApplicationPackages = [ config.programs.librewolf.finalPackage ];
+      defaultApplicationPackages = [ config.programs.brave-origin.finalPackage ];
     };
 
     terminal-exec = {

@@ -38,6 +38,7 @@ in
     ];
 
     users.${settings.username}.directories = [
+      (privateDirectory ".config/BraveSoftware/Brave-Origin")
       (privateDirectory ".local/state/wireplumber")
       (privateDirectory ".ssh")
       "Desktop"
