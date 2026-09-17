@@ -12,7 +12,7 @@ consistent across keyboard layouts.
 |---|---|
 | `Super+T` | Open a terminal |
 | `Super+Alt+L` | Lock the session |
-| `Super+B` | Toggle Waybar |
+| `Super+B` | Toggle the status bar |
 
 ## Screenshots
 
@@ -34,10 +34,10 @@ Active-window captures may include overlapping windows.
 | Shortcut | Action |
 |---|---|
 | `Super+C` | Close the active window |
-| `Super+F` | Toggle fullscreen |
+| `Super+F` | Toggle fullscreen mode |
 | `Super+Shift+F` | Toggle maximised mode |
 
-## Focus
+## Window focus
 
 | Shortcut | Alternative | Action |
 |---|---|---|
@@ -50,12 +50,12 @@ Active-window captures may include overlapping windows.
 
 | Shortcut | Action |
 |---|---|
-| `Super+1` through `Super+9` | Focus workspace 1 through 9 |
+| `Super+1` through `Super+9` | Focus the corresponding workspace |
 | `Super+0` | Focus workspace 10 |
-| `Super+Shift+1` through `Super+Shift+9` | Move the active window to workspace 1 through 9 without following it |
-| `Super+Shift+0` | Move the active window to workspace 10 without following it |
+| `Super+Shift+1` through `Super+Shift+9` | Move the active window to the corresponding workspace without switching workspaces |
+| `Super+Shift+0` | Move the active window to workspace 10 without switching workspaces |
 
-## Move
+## Window movement
 
 | Shortcut | Alternative | Action |
 |---|---|---|
@@ -64,7 +64,7 @@ Active-window captures may include overlapping windows.
 | `Super+Shift+Up` | `Super+Shift+K` | Move the active window up |
 | `Super+Shift+Right` | `Super+Shift+L` | Move the active window right |
 
-## Resize
+## Window resizing
 
 | Shortcut | Alternative | Action |
 |---|---|---|
@@ -91,10 +91,10 @@ locked; volume keys repeat while held.
 
 | Key | Action |
 |---|---|
-| Previous (`XF86AudioPrev`) | Previous track |
+| Previous (`XF86AudioPrev`) | Go to the previous track |
 | Play (`XF86AudioPlay`) | Toggle playback |
 | Pause (`XF86AudioPause`) | Toggle playback |
-| Next (`XF86AudioNext`) | Next track |
+| Next (`XF86AudioNext`) | Go to the next track |
 
 Media controls use `playerctl` and work while locked.
 
