@@ -6,16 +6,16 @@
   <p><strong><a href="docs/">Documentation</a></strong></p>
   <p>
     <a href="https://github.com/synthol/nix0/stargazers">
-      <img alt="Stars" src="https://img.shields.io/github/stars/synthol/nix0?style=for-the-badge&labelColor=000000&color=00D700&logo=starship&logoColor=0087D7">
+      <img alt="Stars" src="https://img.shields.io/github/stars/synthol/nix0?style=for-the-badge&labelColor=000000&color=9ECE6A&logo=starship&logoColor=7AA2F7">
     </a>
     <a href="https://github.com/synthol/nix0/actions/workflows/ci.yml">
-      <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/synthol/nix0/ci.yml?style=for-the-badge&label=CI&labelColor=000000&color=00D700&logo=githubactions&logoColor=0087D7">
+      <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/synthol/nix0/ci.yml?style=for-the-badge&label=CI&labelColor=000000&color=9ECE6A&logo=githubactions&logoColor=7AA2F7">
     </a>
     <a href="https://nixos.org">
-      <img alt="NixOS unstable" src="https://img.shields.io/badge/NixOS-unstable-00D700?style=for-the-badge&labelColor=000000&logo=nixos&logoColor=0087D7">
+      <img alt="NixOS unstable" src="https://img.shields.io/badge/NixOS-unstable-9ECE6A?style=for-the-badge&labelColor=000000&logo=nixos&logoColor=7AA2F7">
     </a>
     <a href="LICENSE">
-      <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-00D700?style=for-the-badge&labelColor=000000&logo=opensourceinitiative&logoColor=0087D7">
+      <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-9ECE6A?style=for-the-badge&labelColor=000000&logo=opensourceinitiative&logoColor=7AA2F7">
     </a>
   </p>
 </div>
