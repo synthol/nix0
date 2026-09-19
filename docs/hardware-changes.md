@@ -1,6 +1,6 @@
 # Hardware changes
 
-nix0 automatically includes Intel video-acceleration drivers when the hardware
+nix0 automatically includes Intel video acceleration drivers when the hardware
 report contains an Intel GPU, including on hybrid systems.
 
 The hardware report is generated during installation and is not refreshed automatically.
