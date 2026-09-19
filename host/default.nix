@@ -6,6 +6,7 @@
     ./boot.nix
     ./disko.nix
     ./facter.nix
+    ./intel.nix
     ./nvidia.nix
     ./preservation.nix
   ];
