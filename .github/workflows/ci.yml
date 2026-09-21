@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -30,6 +30,19 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           enable_kvm: false
 
+      - name: Check formatting
+        run: |
+          nix shell \
+            --inputs-from . \
+            --no-update-lock-file \
+            --no-write-lock-file \
+            nixpkgs#nixfmt \
+            nixpkgs#shfmt \
+            --command bash -e -o pipefail -c '
+              git ls-files -z -- "*.nix" | xargs -0 -r -n 1 nixfmt --check
+              git ls-files -z -- "*.sh" | xargs -0 -r -n 1 shfmt -d -i 2 -ci
+            '
+
       - name: Check source
         run: |
           nix shell \
@@ -38,8 +51,12 @@ jobs:
             --no-write-lock-file \
             'nixpkgs#shellcheck' \
             'nixpkgs#lua' \
-            --command bash -c \
-            'shellcheck scripts/*.sh && luac -p modules/home/hyprland/*.lua'
+            'nixpkgs#actionlint' \
+            --command bash -e -o pipefail -c '
+              git ls-files -z -- "*.sh" | xargs -0 -r -n 1 shellcheck
+              git ls-files -z -- "*.lua" | xargs -0 -r -n 1 luac -p
+              actionlint
+            '
 
       - name: Check flake
         run: |
@@ -56,6 +73,32 @@ jobs:
             --no-write-lock-file \
             .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath \
             >/dev/null
+
+      - name: Build command packages
+        run: |
+          nix build \
+            --no-link \
+            --print-build-logs \
+            --no-update-lock-file \
+            --no-write-lock-file \
+            .#install .#vfio-info
+
+      - name: Check disk layout
+        run: |
+          disko_package=$(
+            nix eval \
+              --impure \
+              --raw \
+              --expr '(builtins.getFlake (toString ./.)).inputs.disko.packages.x86_64-linux.disko.outPath'
+          )
+
+          for disko_mode in destroy,format,mount unmount; do
+            "$disko_package/bin/disko" \
+              --dry-run \
+              --mode "$disko_mode" \
+              --flake .#nixos \
+              --root-mountpoint /mnt/nix0-ci
+          done
 
       - name: Build system
         if: github.event_name == 'workflow_dispatch'
