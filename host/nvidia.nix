@@ -24,10 +24,18 @@ lib.mkIf enabled {
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
 
+  systemd.tmpfiles.rules = lib.mkIf config.hardware.nvidia.powerManagement.enable [
+    "d /persist/nvidia-vram 0700 root root -"
+  ];
+
   hardware.nvidia = {
     branch = cfg.branch or "stable";
     open = cfg.open or null;
     nvidiaSettings = false;
+
+    moduleParams.nvidia = lib.mkIf config.hardware.nvidia.powerManagement.enable {
+      NVreg_TemporaryFilePath = "/persist/nvidia-vram";
+    };
 
     powerManagement = {
       enable = powerCfg.enable or false;
