@@ -18,6 +18,11 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vimium = {
+      url = "github:philc/vimium";
+      flake = false;
+    };
   };
 
   outputs =
@@ -28,6 +33,7 @@
       disko,
       preservation,
       stylix,
+      vimium,
       ...
     }:
     let
@@ -60,7 +66,10 @@
         specialArgs = { inherit settings; };
 
         modules = [
-          { nixpkgs.hostPlatform = system; }
+          {
+            nixpkgs.hostPlatform = system;
+            home-manager.extraSpecialArgs = { inherit vimium; };
+          }
           home-manager.nixosModules.home-manager
           disko.nixosModules.disko
           preservation.nixosModules.preservation

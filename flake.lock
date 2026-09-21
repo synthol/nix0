@@ -243,7 +243,8 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "preservation": "preservation",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "vimium": "vimium"
       }
     },
     "stylix": {
@@ -356,6 +357,22 @@
       "original": {
         "owner": "tinted-theming",
         "repo": "base16-zed",
+        "type": "github"
+      }
+    },
+    "vimium": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784954343,
+        "narHash": "sha256-7edFwPHISs/YUhqdOEcnDvREWuQx0uokSyyQBegeCMg=",
+        "owner": "philc",
+        "repo": "vimium",
+        "rev": "5aa29614bf1dce05e0d316f8c38722e17f9b38c3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "philc",
+        "repo": "vimium",
         "type": "github"
       }
     }
