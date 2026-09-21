@@ -36,7 +36,7 @@ Convert each hexadecimal address `domain:bus:device.function` to decimal
 
 The profile provides `nvidia-offload` when offload is enabled.
 
-## Video acceleration (VA-API)
+## Video acceleration
 
 `hardwareProfiles.nvidia.forceVaapiDriver` defaults to `false`. Set it to `true`
 when your applications require `LIBVA_DRIVER_NAME=nvidia`. This forces the
