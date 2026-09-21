@@ -24,6 +24,7 @@
       "enable": false,
       "branch": "stable",
       "open": null,
+      "forceVaapiDriver": false,
       "powerManagement": {
         "enable": false,
         "finegrained": false

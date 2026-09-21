@@ -17,12 +17,10 @@ in
 lib.mkIf enabled {
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  environment.sessionVariables =
-    lib.mkIf (!offloadEnabled && lib.elem "nvidia" config.services.xserver.videoDrivers)
-      {
-        LIBVA_DRIVER_NAME = "nvidia";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      };
+  environment.sessionVariables = lib.mkIf (lib.elem "nvidia" config.services.xserver.videoDrivers) {
+    __GLX_VENDOR_LIBRARY_NAME = lib.mkIf (!offloadEnabled) "nvidia";
+    LIBVA_DRIVER_NAME = lib.mkIf (cfg.forceVaapiDriver or false) "nvidia";
+  };
 
   systemd.tmpfiles.rules = lib.mkIf config.hardware.nvidia.powerManagement.enable [
     "d /persist/nvidia-vram 0700 root root -"
