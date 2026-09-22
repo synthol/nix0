@@ -621,7 +621,7 @@ while :; do
   fi
 
   case $username in
-    root | nobody | nixbld*)
+    root)
       input_error="Reserved username: $username"
       continue
       ;;
