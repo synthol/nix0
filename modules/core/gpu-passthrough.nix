@@ -204,7 +204,6 @@ let
 
   selectedNvidia = lib.any isNvidia selectedGraphics;
   remainingNvidia = lib.any isNvidia remainingGraphics;
-  facterGraphicsModules = config.hardware.facter.detected.boot.graphics.kernelModules;
 
   lookingGlassMemorySizes = [
     32
@@ -307,10 +306,6 @@ in
 
         (lib.mkIf (selectedNvidia && !remainingNvidia) {
           services.xserver.videoDrivers = lib.mkForce [ "modesetting" ];
-
-          hardware.facter.detected.boot.graphics.kernelModules = lib.mkForce (
-            lib.filter (module: !(lib.hasPrefix "nvidia" module)) facterGraphicsModules
-          );
 
           hardware.nvidia = {
             powerManagement = {
