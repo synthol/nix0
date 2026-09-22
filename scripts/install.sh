@@ -426,6 +426,9 @@ check_disk_safety() {
   local block_names=()
   local swaps=()
 
+  [[ ! -e /dev/mapper/system && ! -L /dev/mapper/system ]] ||
+    die "/dev/mapper/system already exists; reboot into fresh installation media before retrying"
+
   mapfile -t nodes < <(
     lsblk --raw --noheadings --paths --output PATH "$disk"
   )
