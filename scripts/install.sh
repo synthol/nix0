@@ -502,6 +502,7 @@ check_disk_safety() {
   local node
   local swap_device
   local block_name
+  local block_names_output
   local holder_paths=()
   local nodes=()
   local block_names=()
@@ -560,9 +561,12 @@ check_disk_safety() {
     done
   done
 
-  mapfile -t block_names < <(
+  block_names_output=$(
     lsblk --raw --noheadings --output KNAME "$disk"
-  )
+  ) || die "Cannot inspect target disk holders"
+  [[ -n ${block_names_output//[[:space:]]/} ]] ||
+    die "Cannot inspect target disk holders"
+  mapfile -t block_names <<<"$block_names_output"
 
   for block_name in "${block_names[@]}"; do
     holder_paths=(/sys/class/block/"$block_name"/holders/*)
