@@ -27,8 +27,7 @@ distractions with a black background and disables borders, blur, gaps, and
 animations.
 
 For tools you only need occasionally, consider using `nix run` or `nix shell`
-to keep the declared package set small. Familiarity with NixOS is recommended
-for maintaining and modifying the system.
+to keep the declared package set small.
 
 ## Features
 
