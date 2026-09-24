@@ -15,28 +15,72 @@ readonly INSTALL_NIXOS_INSTALL
 readonly INSTALL_TZDIR
 readonly INSTALL_XKB_RULES
 readonly MIN_DISK_BYTES=$((32 * 1024 * 1024 * 1024))
+readonly INSTALL_ACCENT_COLOR='#7AA2F7'
+readonly INSTALL_ACCENT_TEXT_COLOR='#000000'
+readonly INSTALL_HEADING_COLOR='#9ECE6A'
+readonly INSTALL_WARNING_COLOR='#E0AF68'
+readonly INSTALL_ERROR_COLOR='#F7768E'
+readonly INSTALL_TEXT_COLOR='#C8C8C8'
+readonly INSTALL_OPTION_TEXT_COLOR='#FFFFFF'
+readonly INSTALL_MUTED_COLOR='#909090'
+readonly INSTALL_BUTTON_BACKGROUND_COLOR='#1C1C1C'
 # shellcheck disable=SC2016
 readonly YESCRYPT_RE='^\$y\$[./A-Za-z0-9]+\$[./A-Za-z0-9]{0,86}\$[./A-Za-z0-9]{43}$'
 
+export GUM_CHOOSE_CURSOR_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_CHOOSE_HEADER_FOREGROUND=$INSTALL_HEADING_COLOR
+export GUM_CHOOSE_ITEM_FOREGROUND=$INSTALL_OPTION_TEXT_COLOR
+export GUM_CHOOSE_SELECTED_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_CONFIRM_PROMPT_BOLD=false
+export GUM_CONFIRM_PROMPT_FOREGROUND=$INSTALL_HEADING_COLOR
+export GUM_CONFIRM_PROMPT_MARGIN='0'
+export GUM_CONFIRM_SELECTED_BACKGROUND=$INSTALL_ACCENT_COLOR
+export GUM_CONFIRM_SELECTED_FOREGROUND=$INSTALL_ACCENT_TEXT_COLOR
+export GUM_CONFIRM_SELECTED_MARGIN='0 2 0 0'
+export GUM_CONFIRM_UNSELECTED_BACKGROUND=$INSTALL_BUTTON_BACKGROUND_COLOR
+export GUM_CONFIRM_UNSELECTED_FOREGROUND=$INSTALL_OPTION_TEXT_COLOR
+export GUM_CONFIRM_UNSELECTED_MARGIN='0 2 0 0'
+export GUM_FILTER_HEADER_FOREGROUND=$INSTALL_HEADING_COLOR
+export GUM_FILTER_INDICATOR_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_FILTER_SELECTED_PREFIX_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND=$INSTALL_MUTED_COLOR
+export GUM_FILTER_MATCH_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_FILTER_TEXT_FOREGROUND=$INSTALL_OPTION_TEXT_COLOR
+export GUM_FILTER_CURSOR_TEXT_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_FILTER_PROMPT_FOREGROUND=$INSTALL_MUTED_COLOR
+export GUM_FILTER_PLACEHOLDER_FOREGROUND=$INSTALL_MUTED_COLOR
+export GUM_INPUT_CURSOR_FOREGROUND=$INSTALL_ACCENT_COLOR
+export GUM_INPUT_HEADER_FOREGROUND=$INSTALL_HEADING_COLOR
+export GUM_INPUT_PROMPT_FOREGROUND=$INSTALL_TEXT_COLOR
+export GUM_INPUT_PLACEHOLDER_FOREGROUND=$INSTALL_MUTED_COLOR
+
 disko_started=false
-installation_started_at=0
 stage_dir=
 work_dir=
 mount_point=
 
 die() {
-  printf 'Error: %s\n' "$*" >&2
+  "$INSTALL_GUM" style --foreground "$INSTALL_ERROR_COLOR" --bold=false -- "Error: $*" >&2 ||
+    printf 'Error: %s\n' "$*" >&2
   exit 1
 }
 
 warn() {
-  printf 'Warning: %s\n' "$*" >&2
+  "$INSTALL_GUM" style --foreground "$INSTALL_WARNING_COLOR" --bold=false -- "Warning: $*" >&2 ||
+    printf 'Warning: %s\n' "$*" >&2
+}
+
+clear_screen() {
+  printf '\033[2J\033[H' >&2
+}
+
+print_heading() {
+  "$INSTALL_GUM" style --foreground "$INSTALL_HEADING_COLOR" --bold=false -- "$@"
 }
 
 cleanup() {
   local status=$?
   local cleanup_failed=false
-  local elapsed_seconds
 
   trap - EXIT
   set +e
@@ -78,21 +122,22 @@ cleanup() {
   fi
 
   if ((status == 0)) && [[ ${disko_started:-false} == true ]]; then
-    elapsed_seconds=$((SECONDS - installation_started_at))
-    printf '\nInstallation and cleanup succeeded in %dm %ds.\n' \
-      "$((elapsed_seconds / 60))" "$((elapsed_seconds % 60))"
-    printf 'Keep the NixOS installation media connected until the computer is fully off.\n'
-    printf 'Then remove the media and power it on.\n'
-    printf '\nAfter booting and logging in, press Super+T (Windows/Meta+T) to open a terminal.\n'
-    printf 'Run "nmtui connect" if you need to connect to a network.\n'
+    clear_screen
+    print_heading "Installation completed."
+    printf '\nSelect "Power off now". Once the computer is fully off,\n'
+    printf 'remove the installation media, then power it on.\n'
+    printf '\nUnlock the disk with your encryption passphrase and log in.\n'
+    printf 'Hyprland starts automatically. Press Super+T to open a terminal.\n'
+    printf 'If needed, run "nmtui connect" to connect to a network.\n'
     printf '\n'
 
     if "$INSTALL_GUM" choose \
       --header "" \
       --height 1 \
+      --no-show-help \
       --cursor "" \
-      --cursor.foreground 230 \
-      --cursor.background 212 \
+      --cursor.foreground "$INSTALL_ACCENT_TEXT_COLOR" \
+      --cursor.background "$INSTALL_ACCENT_COLOR" \
       "Power off now" >/dev/null; then
       if systemctl poweroff; then
         exit "$status"
@@ -185,18 +230,31 @@ validate_xkb_selection() {
 select_value() {
   local header=$1
   local selected=${2:-}
+  local height
+  local -a choices=()
 
-  awk -v selected="$selected" '
-    BEGIN {
-      if (selected != "")
-        print selected
-    }
+  mapfile -t choices < <(
+    awk -v selected="$selected" '
+      BEGIN {
+        if (selected != "")
+          print selected
+      }
 
-    $0 != selected
-  ' |
+      $0 != selected
+    '
+  )
+
+  height=$((${#choices[@]} + 4))
+  if ((height > 15)); then
+    height=15
+  fi
+
+  clear_screen
+
+  printf '%s\n' "${choices[@]}" |
     "$INSTALL_GUM" filter \
       --header "$header" \
-      --height 15 \
+      --height "$height" \
       --limit 1 \
       --placeholder "Type to search"
 }
@@ -206,8 +264,14 @@ input_value() {
   local input_error=$2
   shift 2
 
+  clear_screen
+
   if [[ -n $input_error ]]; then
-    header="Warning: $input_error"$'\n\n'"$header"
+    "$INSTALL_GUM" style \
+      --foreground "$INSTALL_WARNING_COLOR" \
+      --bold=false \
+      -- "Warning: $input_error" >&2
+    printf '\n' >&2
   fi
 
   "$INSTALL_GUM" input \
@@ -284,6 +348,7 @@ prepare_keyboard() {
       keyboard_label+=" (variant: $xkb_variant)"
     fi
 
+    clear_screen
     "$INSTALL_GUM" confirm --default=false \
       "Does the live desktop use the $keyboard_label?" ||
       die "Keyboard layout confirmation was cancelled"
@@ -380,9 +445,25 @@ disk_choices() {
     [[ -n $disk_model ]] || disk_model=unknown
 
     seen["$canonical"]=true
-    printf '%-8s\t%-24s\t%s\n' \
+    printf '%s\t%s\t%s\n' \
       "$disk_size" "$disk_model" "$reference"
-  done
+  done | awk -F '\t' '
+    {
+      sizes[NR] = $1
+      models[NR] = $2
+      references[NR] = $3
+      if (length($1) > size_width)
+        size_width = length($1)
+      if (length($2) > model_width)
+        model_width = length($2)
+    }
+
+    END {
+      for (row = 1; row <= NR; row++)
+        printf "%-*s\t%-*s\t%s\n", \
+          size_width, sizes[row], model_width, models[row], references[row]
+    }
+  '
 }
 
 resolve_target_disk() {
@@ -592,19 +673,22 @@ unset available_disks disk_choice
 target_disk=$(resolve_target_disk "$disk_reference")
 check_disk_safety "$target_disk"
 
-trim_answer=$(
-  "$INSTALL_GUM" choose \
-    --header $'Discard/TRIM lets storage reclaim unused blocks.\nAllowing it through LUKS reveals allocation patterns.\n\nAllow discard/TRIM requests through LUKS?' \
-    --height 2 \
-    --selected "No" \
-    "Yes" "No"
-) || die "Discard/TRIM selection was cancelled"
+clear_screen
+printf 'Discard/TRIM lets storage reclaim unused blocks.\n'
+printf 'Allowing it through LUKS reveals allocation patterns.\n\n'
 
-if [[ $trim_answer == Yes ]]; then
+if "$INSTALL_GUM" confirm \
+  --default=false \
+  --affirmative "Allow TRIM" \
+  --negative "Keep disabled" \
+  "Allow discard/TRIM through disk encryption?"; then
   allow_discards=true
+else
+  case $? in
+    1) allow_discards=false ;;
+    *) die "Discard/TRIM selection was cancelled or failed" ;;
+  esac
 fi
-
-unset trim_answer
 
 initial_identity=$(disk_identity "$target_disk")
 [[ $initial_identity != null ]] || die "Cannot read target disk identity"
@@ -718,7 +802,8 @@ printf '%s\n' "$password_hash" >"$passwords_dir/$username"
 chmod 0600 -- "$passwords_dir/$username"
 unset password_hash
 
-printf '\nValidating the complete NixOS configuration...\n'
+print_heading "Validating the complete NixOS configuration..."
+printf '\n'
 
 nix \
   --extra-experimental-features "nix-command flakes" \
@@ -729,17 +814,32 @@ nix \
   "$stage_dir#nixosConfigurations.nixos.config.system.build.toplevel.drvPath" \
   >/dev/null
 
-printf '\nThe selected disk is:\n\n'
+clear_screen
+print_heading "The selected disk is:"
+printf '\n'
 show_disk_identity "$disk_reference" "$initial_identity"
-printf '\nAll existing data on this disk will be erased.\n'
+printf '\n'
 
-confirmation=$(input_value "Type ERASE to erase the disk shown above" "") ||
-  die "Disk erasure confirmation was cancelled"
+"$INSTALL_GUM" confirm \
+  --default=false \
+  --affirmative "Erase disk" \
+  --negative "Cancel" \
+  "All existing data on this disk will be permanently erased. Continue?" ||
+  die "Disk erasure was cancelled; nothing was erased"
 
-[[ $confirmation == ERASE ]] ||
-  die "Confirmation did not match; nothing was erased"
+clear_screen
+printf 'Disko will request a separate LUKS passphrase.\n'
+printf 'Select "Continue" to start pinned official Disko.\n\n'
 
-installation_started_at=$SECONDS
+"$INSTALL_GUM" choose \
+  --header "" \
+  --height 1 \
+  --no-show-help \
+  --cursor "" \
+  --cursor.foreground "$INSTALL_ACCENT_TEXT_COLOR" \
+  --cursor.background "$INSTALL_ACCENT_COLOR" \
+  "Continue" >/dev/null ||
+  die "Installation was cancelled; nothing was erased"
 
 rechecked_disk=$(resolve_target_disk "$disk_reference")
 [[ $rechecked_disk == "$target_disk" ]] ||
@@ -751,9 +851,10 @@ rechecked_identity=$(disk_identity "$target_disk")
 
 check_disk_safety "$target_disk"
 
-printf '\nDisk identity and safety checks passed.\n'
-printf 'Disko will now request a separate LUKS passphrase.\n'
-printf 'Starting pinned official Disko...\n\n'
+print_heading "Disk identity and safety checks passed."
+print_heading "Starting pinned official Disko..."
+printf '\n'
+sleep 3
 
 disko_started=true
 
@@ -779,7 +880,10 @@ install -m 0600 -- \
   "$passwords_dir/$username" \
   "$mount_point/persist/passwords/$username"
 
-printf '\nDisko completed. Building and installing NixOS in the target store...\n\n'
+printf '\n'
+print_heading "Disko completed."
+print_heading "Building and installing NixOS in the target store..."
+printf '\n'
 
 (
   umask 022
