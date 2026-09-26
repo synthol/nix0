@@ -1,6 +1,6 @@
 <div align="center">
   <p>
-    <img src=".github/assets/logo.png" alt="nix0" width="240">
+    <img src=".github/assets/logo.png" alt="nix0" width="220">
   </p>
   <p>A minimal NixOS configuration built around Hyprland.</p>
   <p><strong><a href="docs/">Documentation</a></strong></p>
@@ -33,7 +33,7 @@ to keep the declared package set small.
 
 - **Desktop:** Preconfigured Hyprland session with Waybar
 - **Theming:** Coordinated styling through Stylix
-- **Vim-style navigation:** Unified keyboard controls across Hyprland, Neovim, Vimium, and more
+- **Navigation:** Vim-style controls across Hyprland, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
 - **Installation:** Guided installer with Gum and NixOS Facter
 - **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA profiles and GPU passthrough
