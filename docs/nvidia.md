@@ -36,12 +36,12 @@ Convert each hexadecimal address `domain:bus:device.function` to decimal
 
 The profile provides `nvidia-offload` when offload is enabled.
 
-## Video acceleration
+## VA-API backend selection
 
 `hardwareProfiles.nvidia.forceVaapiDriver` defaults to `false`. Set it to `true`
 when your applications require `LIBVA_DRIVER_NAME=nvidia`. This forces the
 NVIDIA VA-API backend throughout the session, independently of PRIME offload.
-Leave it disabled when applications need Intel or AMD video acceleration.
+Leave it disabled when applications need an Intel or AMD VA-API backend.
 Leaving it disabled does not disable VA-API or guarantee automatic NVIDIA
 backend selection.
 

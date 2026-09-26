@@ -12,7 +12,7 @@ the installer fills in disk, account, and regional values from your choices.
 | `git.*` | Git name and email; set both or leave both empty |
 | `allowDiscards` | LUKS discard/TRIM support; rebuild with `boot` and reboot |
 | [`battery.*`](battery-limits.md) | 80% battery charge limit |
-| [`hardwareProfiles.nvidia.*`](nvidia.md) | NVIDIA drivers, power management, PRIME offload, and video acceleration |
+| [`hardwareProfiles.nvidia.*`](nvidia.md) | NVIDIA drivers, power management, PRIME offload, and VA-API backend selection |
 | [`gpuPassthrough.*`](gpu-passthrough.md) | GPU passthrough and optional Looking Glass |
 
 ## Applying changes
