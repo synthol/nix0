@@ -15,8 +15,8 @@ passthrough specialisation:
 
 1. Enable VT-d (Intel) or AMD-Vi/IOMMU (AMD) in firmware; CPU virtualisation
    alone is insufficient.
-2. Reboot and hold `Space` to show systemd-boot. Select the normal nix0/NixOS
-   entry and press `e` to edit its kernel command line for this boot.
+2. Reboot, then select the normal nix0/NixOS entry in the systemd-boot menu.
+   Press `e` to edit its kernel command line for this boot.
 3. On Intel, append `intel_iommu=on`. Remove any disabling parameters such as
    `iommu=off` or `intel_iommu=off`. On AMD, firmware-enabled IOMMU is normally
    detected automatically; remove `iommu=off` or `amd_iommu=off` if present.
