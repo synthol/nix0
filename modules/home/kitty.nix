@@ -1,6 +1,7 @@
 {
   programs.kitty = {
     enable = true;
+    shellIntegration.mode = "no-rc no-cursor";
 
     settings = {
       cursor_blink_interval = 0;

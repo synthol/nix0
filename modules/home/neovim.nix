@@ -10,6 +10,7 @@
       vim.opt.number = true
       vim.opt.wrap = false
       vim.opt.clipboard = "unnamedplus"
+      vim.opt.guicursor = ""
     '';
   };
 }
