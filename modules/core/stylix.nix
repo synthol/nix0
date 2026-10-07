@@ -31,5 +31,7 @@
       base0E = "AD8EE6";
       base0F = "B59064";
     };
+
+    targets.gtksourceview.enable = false;
   };
 }
