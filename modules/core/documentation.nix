@@ -1,0 +1,3 @@
+{
+  documentation.doc.enable = false;
+}

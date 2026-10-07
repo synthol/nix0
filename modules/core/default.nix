@@ -2,6 +2,7 @@
   imports = [
     ./audio.nix
     ./bash.nix
+    ./documentation.nix
     ./gpu-passthrough.nix
     ./hyprland.nix
     ./localisation.nix
