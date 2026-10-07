@@ -1,4 +1,12 @@
 { pkgs, ... }:
+let
+  cursorTheme = "Bibata-Modern-Classic";
+
+  cursorPackage = pkgs.runCommand cursorTheme { } ''
+    mkdir -p "$out/share/icons"
+    cp -r ${pkgs.bibata-cursors}/share/icons/${cursorTheme} "$out/share/icons/"
+  '';
+in
 {
   gtk = {
     colorScheme = "dark";
@@ -8,8 +16,8 @@
 
   home.pointerCursor = {
     enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
+    package = cursorPackage;
+    name = cursorTheme;
     size = 24;
   };
 }
