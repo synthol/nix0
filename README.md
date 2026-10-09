@@ -20,14 +20,10 @@
   </p>
 </div>
 
-nix0 provides a minimal system you can use as is or extend. It centres on
-keyboard control and terminal workflows, omitting common desktop components
-such as an application launcher and file manager. It reduces visual
-distractions with a black background and disables borders, blur, gaps, and
-animations.
-
-For tools you only need occasionally, consider using `nix run` or `nix shell`
-to keep the declared package set small.
+nix0 is a keyboard-driven NixOS system you can use as is or extend. It centres
+on terminal workflows and omits common desktop components such as an
+application launcher and file manager. To reduce visual distractions, it uses
+a black background and disables borders, blur, gaps, and animations.
 
 ## Features
 
@@ -54,7 +50,7 @@ to keep the declared package set small.
 - An x86_64 system using UEFI
 - Secure Boot disabled
 - An internet connection
-- A dedicated installation disk of at least 32 GiB
+- A dedicated disk of at least 32 GiB
 
 > [!WARNING]
 > The installer erases the selected disk after displaying its identity and
@@ -87,3 +83,7 @@ If needed, connect to a network with:
 ```sh
 nmtui connect
 ```
+
+> [!TIP]
+> Run occasional tools with `nix run` or `nix shell` to keep the configuration
+> small.
