@@ -17,5 +17,10 @@ root ownership and `0600` permissions. For the current user:
 sudoedit /persist/passwords/"$(id -un)"
 ```
 
+An invalid hash blocks login, `sudo`, and unlocking the session, even in older
+generations, which read the same file. Before rebuilding, open a root shell
+with `sudo -i` and keep it open until `sudo` accepts the new password in
+another terminal.
+
 Rebuild with `switch` to apply the login/sudo password change. The separate
 LUKS passphrase is unchanged.
