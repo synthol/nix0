@@ -1,3 +1,7 @@
+{ config, lib, ... }:
+let
+  colors = config.lib.stylix.colors.withHashtag;
+in
 {
   programs.kitty = {
     enable = true;
@@ -10,5 +14,10 @@
       remember_window_size = false;
       scrollback_lines = 10000;
     };
+
+    extraConfig = lib.mkAfter ''
+      tab_bar_background ${colors.base00}
+      inactive_tab_background ${colors.base00}
+    '';
   };
 }

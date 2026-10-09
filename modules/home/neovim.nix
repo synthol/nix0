@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  stylix.targets.neovim.transparentBackground.numberLine = true;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
