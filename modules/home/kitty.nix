@@ -18,6 +18,7 @@ in
     extraConfig = lib.mkAfter ''
       tab_bar_background ${colors.base00}
       inactive_tab_background ${colors.base00}
+      color8 ${colors.base03}
     '';
   };
 }
