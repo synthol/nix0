@@ -24,56 +24,46 @@ in
       display = {
         brightColor = false;
         color.keys = colors.base04;
-        separator = "  ";
-        key.width = 11;
-        percent.type = [ "num" ];
+        separator = "";
+        key.width = 8;
       };
 
       modules = [
         "break"
-        "os"
-        "kernel"
-        "packages"
-        "shell"
         {
-          type = "wm";
-          key = "Desktop";
-        }
-        "terminal"
-        {
-          type = "terminalfont";
-          key = "Font";
-        }
-        "cursor"
-        "break"
-        {
-          type = "host";
-          key = "System";
+          type = "os";
+          key = "os";
+          format = "{pretty-name}";
         }
         {
-          type = "display";
-          compactType = "original-with-refresh-rate";
+          type = "kernel";
+          key = "kernel";
+          format = "{release}";
         }
-        "cpu"
         {
-          type = "gpu";
-          key = "GPU";
+          type = "packages";
+          key = "pkgs";
+          format = "{all}";
         }
-        "break"
-        "memory"
+        {
+          type = "shell";
+          key = "shell";
+        }
+        {
+          type = "uptime";
+          key = "uptime";
+          format = "{?days}{days}d {?}{hours}h {minutes}m";
+        }
+        {
+          type = "memory";
+          key = "memory";
+          format = "{used} / {total}";
+        }
         {
           type = "disk";
-          key = "Disk";
+          key = "disk";
           folders = "/nix";
-        }
-        {
-          type = "battery";
-          key = "Battery";
-        }
-        "uptime"
-        {
-          type = "datetime";
-          key = "Date/Time";
+          format = "{size-used} / {size-total}";
         }
         "break"
       ];
