@@ -76,6 +76,10 @@ print_heading() {
   "$INSTALL_GUM" style --foreground "$INSTALL_HEADING_COLOR" --bold=false -- "$@"
 }
 
+print_text() {
+  "$INSTALL_GUM" style --foreground "$INSTALL_TEXT_COLOR" --bold=false -- "$@"
+}
+
 cleanup() {
   local status=$?
   local cleanup_failed=false
@@ -122,11 +126,15 @@ cleanup() {
   if ((status == 0)) && [[ ${disko_started:-false} == true ]]; then
     clear_screen
     print_heading "Installation completed."
-    printf '\nSelect "Power off now". Once the computer is fully off,\n'
-    printf 'remove the installation media, then power it on.\n'
-    printf '\nUnlock the disk with your encryption passphrase and log in.\n'
-    printf 'Hyprland starts automatically. Press Super+T to open a terminal.\n'
-    printf 'If needed, run "nmtui connect" to connect to a network.\n'
+    printf '\n'
+    print_text \
+      'Select "Power off now". Once the computer is fully off,' \
+      'remove the installation media, then power it on.'
+    printf '\n'
+    print_text \
+      'Unlock the disk with your encryption passphrase and log in.' \
+      'Hyprland starts automatically. Press Super+T to open a terminal.' \
+      'If needed, run "nmtui connect" to connect to a network.'
     printf '\n'
 
     if "$INSTALL_GUM" choose \
@@ -143,7 +151,8 @@ cleanup() {
       warn "Could not power off automatically"
     fi
 
-    printf '\nRun "sudo systemctl poweroff" when ready.\n'
+    printf '\n'
+    print_text 'Run "sudo systemctl poweroff" when ready.'
   fi
 
   exit "$status"
@@ -599,7 +608,7 @@ show_disk_identity() {
     "  serial:      \(.serial // "unknown")",
     "  WWN:         \(.wwn // "unknown")",
     "  transport:   \(.tran // "unknown")"
-  ' <<<"$identity"
+  ' <<<"$identity" | print_text
 }
 
 validate_yescrypt() {
@@ -676,8 +685,10 @@ target_disk=$(resolve_target_disk "$disk_reference")
 check_disk_safety "$target_disk"
 
 clear_screen
-printf 'Discard/TRIM lets storage reclaim unused blocks.\n'
-printf 'Allowing it through LUKS reveals allocation patterns.\n\n'
+print_text \
+  'Discard/TRIM lets storage reclaim unused blocks.' \
+  'Allowing it through LUKS reveals allocation patterns.'
+printf '\n'
 
 if "$INSTALL_GUM" confirm \
   --default=false \
@@ -830,8 +841,10 @@ printf '\n'
   die "Disk erasure was cancelled; nothing was erased"
 
 clear_screen
-printf 'Disko will request a separate LUKS passphrase.\n'
-printf 'Select "Continue" to start pinned official Disko.\n\n'
+print_text \
+  'Disko will request a separate LUKS passphrase.' \
+  'Select "Continue" to start pinned official Disko.'
+printf '\n'
 
 "$INSTALL_GUM" choose \
   --header "" \
