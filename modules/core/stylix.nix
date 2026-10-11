@@ -10,7 +10,15 @@
         name = "JetBrains Mono";
       };
 
-      sizes.terminal = 10;
+      sansSerif = {
+        package = pkgs.liberation_ttf;
+        name = "Liberation Sans";
+      };
+
+      sizes = {
+        applications = 11;
+        terminal = 10;
+      };
     };
 
     base16Scheme = {
