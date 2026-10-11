@@ -585,6 +585,7 @@ disk_identity() {
 show_disk_identity() {
   local reference=$1
   local identity=$2
+  local line
 
   jq --raw-output --arg reference "$reference" '
     "  by-id:       \($reference)",
@@ -596,7 +597,10 @@ show_disk_identity() {
     "  serial:      \(.serial // "unknown")",
     "  WWN:         \(.wwn // "unknown")",
     "  transport:   \(.tran // "unknown")"
-  ' <<<"$identity" | print_text
+  ' <<<"$identity" |
+    while IFS= read -r line; do
+      print_text "$line"
+    done
 }
 
 validate_yescrypt() {
