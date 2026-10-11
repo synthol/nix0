@@ -10,7 +10,7 @@
         name = "JetBrains Mono";
       };
 
-      sizes.terminal = 11;
+      sizes.terminal = 10;
     };
 
     base16Scheme = {
