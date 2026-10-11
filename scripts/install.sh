@@ -267,10 +267,7 @@ input_value() {
   clear_screen
 
   if [[ -n $input_error ]]; then
-    "$INSTALL_GUM" style \
-      --foreground "$INSTALL_WARNING_COLOR" \
-      --bold=false \
-      -- "Warning: $input_error" >&2
+    warn "$input_error"
     printf '\n' >&2
   fi
 
