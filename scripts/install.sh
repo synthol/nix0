@@ -25,10 +25,6 @@ readonly INSTALL_MUTED_COLOR='#909090'
 # shellcheck disable=SC2016
 readonly YESCRYPT_RE='^\$y\$[./A-Za-z0-9]+\$[./A-Za-z0-9]{0,86}\$[./A-Za-z0-9]{43}$'
 
-export GUM_CHOOSE_CURSOR_FOREGROUND=$INSTALL_ACCENT_COLOR
-export GUM_CHOOSE_HEADER_FOREGROUND=$INSTALL_HEADING_COLOR
-export GUM_CHOOSE_ITEM_FOREGROUND=$INSTALL_TEXT_COLOR
-export GUM_CHOOSE_SELECTED_FOREGROUND=$INSTALL_ACCENT_COLOR
 export GUM_CONFIRM_PROMPT_BOLD=false
 export GUM_CONFIRM_PROMPT_FOREGROUND=$INSTALL_HEADING_COLOR
 export GUM_CONFIRM_PROMPT_MARGIN='0'
@@ -128,8 +124,8 @@ cleanup() {
     print_heading "Installation completed."
     printf '\n'
     print_text \
-      'Select "Power off now". Once the computer is fully off,' \
-      'remove the installation media, then power it on.'
+      'Once the computer is fully off, remove the installation media,' \
+      'then power it on.'
     printf '\n'
     print_text \
       'Unlock the disk with your encryption passphrase and log in.' \
@@ -137,14 +133,11 @@ cleanup() {
       'If needed, run "nmtui connect" to connect to a network.'
     printf '\n'
 
-    if "$INSTALL_GUM" choose \
-      --header "" \
-      --height 1 \
+    if "$INSTALL_GUM" confirm \
+      --affirmative "Power off now" \
+      --negative "" \
       --no-show-help \
-      --cursor "" \
-      --cursor.foreground "$INSTALL_ACCENT_TEXT_COLOR" \
-      --cursor.background "$INSTALL_ACCENT_COLOR" \
-      "Power off now" >/dev/null; then
+      'Select "Power off now".'; then
       if systemctl poweroff; then
         exit "$status"
       fi
@@ -841,19 +834,14 @@ printf '\n'
   die "Disk erasure was cancelled; nothing was erased"
 
 clear_screen
-print_text \
-  'Disko will request a separate LUKS passphrase.' \
-  'Select "Continue" to start pinned official Disko.'
+print_text 'Disko will request a separate LUKS passphrase.'
 printf '\n'
 
-"$INSTALL_GUM" choose \
-  --header "" \
-  --height 1 \
+"$INSTALL_GUM" confirm \
+  --affirmative "Continue" \
+  --negative "" \
   --no-show-help \
-  --cursor "" \
-  --cursor.foreground "$INSTALL_ACCENT_TEXT_COLOR" \
-  --cursor.background "$INSTALL_ACCENT_COLOR" \
-  "Continue" >/dev/null ||
+  'Select "Continue" to start pinned official Disko.' ||
   die "Installation was cancelled; nothing was erased"
 
 rechecked_disk=$(resolve_target_disk "$disk_reference")
