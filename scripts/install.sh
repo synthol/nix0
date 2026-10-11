@@ -169,7 +169,8 @@ settings_file=$INSTALL_SOURCE/settings.json
 [[ -r $settings_file ]] || die "Cannot read settings.json"
 
 read_setting() {
-  jq --exit-status --raw-output "$1 | strings" "$settings_file"
+  jq --exit-status --raw-output "$1 | strings" "$settings_file" ||
+    die "settings.json $1 must be a string"
 }
 
 validate_time_zone() {
