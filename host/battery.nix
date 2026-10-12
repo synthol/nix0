@@ -16,7 +16,11 @@ in
   ];
 
   boot = lib.mkIf (acerCfg.enable or false) {
-    extraModulePackages = [ config.boot.kernelPackages.acer-wmi-battery ];
+    extraModulePackages = [
+      (config.boot.kernelPackages.acer-wmi-battery.overrideAttrs (old: {
+        installPhase = lib.replaceStrings [ "xz -f" ] [ "xz --check=crc32 -f" ] old.installPhase;
+      }))
+    ];
     kernelModules = [ "acer-wmi-battery" ];
     extraModprobeConfig = "options acer-wmi-battery enable_health_mode=1";
   };
