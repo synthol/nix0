@@ -72,14 +72,6 @@ in
         color: ${colors.base05};
       }
 
-      .modules-left {
-        margin-left: 8px;
-      }
-
-      .modules-right {
-        margin-right: 8px;
-      }
-
       #workspaces button {
         color: ${colors.base03};
         margin: 3px;
