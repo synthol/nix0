@@ -11,12 +11,17 @@
       };
 
       sansSerif = {
+        package = pkgs.inter;
+        name = "Inter";
+      };
+
+      serif = {
         package = pkgs.liberation_ttf;
-        name = "Liberation Sans";
+        name = "Liberation Serif";
       };
 
       sizes = {
-        applications = 11;
+        applications = 10;
         terminal = 10;
       };
     };
