@@ -25,6 +25,10 @@ on terminal workflows and omits common desktop components such as an
 application launcher and file manager. To reduce visual distractions, it uses
 a black background and disables borders, blur, gaps, and animations.
 
+<p align="center">
+  <img src=".github/assets/screenshot.png" alt="Fastfetch, btop, cbonsai, and Neovim" width="100%">
+</p>
+
 ## Features
 
 - **Desktop:** Preconfigured Hyprland session with Waybar
@@ -35,14 +39,6 @@ a black background and disables borders, blur, gaps, and animations.
 - **Installation:** Guided installer with Gum and NixOS Facter
 - **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA profiles and GPU passthrough
 - **Virtualisation:** libvirt/QEMU/KVM with virt-manager and optional VFIO and Looking Glass
-
-## Screenshots
-
-<p align="center">
-  <img src=".github/assets/screenshots/1.png" alt="Fastfetch and Neovim" width="100%"><br>
-  <img src=".github/assets/screenshots/2.png" alt="Neovim and btop" width="49%">
-  <img src=".github/assets/screenshots/3.png" alt="Hyprlock" width="49%">
-</p>
 
 ## Installation
 
