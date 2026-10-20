@@ -23,7 +23,7 @@
 nix0 is a keyboard-driven NixOS system you can use as is or extend. It centres
 on terminal workflows and omits common desktop components such as an
 application launcher and file manager. To reduce visual distractions, it uses
-a black background and disables borders, blur, gaps, and animations.
+a black background and disables blur, gaps, and animations.
 
 <p align="center">
   <img src=".github/assets/screenshot.png" alt="Fastfetch, btop, cbonsai, and Neovim" width="100%">

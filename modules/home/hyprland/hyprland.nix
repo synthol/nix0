@@ -1,4 +1,13 @@
-{ osConfig, pkgs, ... }:
+{
+  config,
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
+let
+  colors = config.lib.stylix.colors;
+in
 {
   home.packages = with pkgs; [
     brightnessctl
@@ -20,9 +29,16 @@
     package = null;
     portalPackage = null;
 
-    settings.config.input = {
-      kb_layout = osConfig.services.xserver.xkb.layout;
-      kb_variant = osConfig.services.xserver.xkb.variant;
+    settings.config = {
+      general = {
+        "col.active_border" = lib.mkForce "rgb(${colors.base05})";
+        "col.inactive_border" = lib.mkForce "rgb(${colors.base00})";
+      };
+
+      input = {
+        kb_layout = osConfig.services.xserver.xkb.layout;
+        kb_variant = osConfig.services.xserver.xkb.variant;
+      };
     };
 
     extraLuaFiles = {
