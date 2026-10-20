@@ -79,8 +79,11 @@ in
         padding: 0;
       }
 
-      #workspaces button.active,
       #workspaces button.visible {
+        color: ${colors.base05};
+      }
+
+      #workspaces button.active {
         background: ${colors.base05};
         color: ${colors.base00};
         font-weight: bold;
