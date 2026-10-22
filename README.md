@@ -31,7 +31,7 @@ a black background and disables blur, gaps, and animations.
 
 ## Features
 
-- **Desktop:** Preconfigured Hyprland session with Waybar
+- **Desktop:** Preconfigured Hyprland with Waybar and optional scrolling layout
 - **Environment:** Declarative configuration through Home Manager
 - **Theming:** Coordinated styling through Stylix
 - **Navigation:** Vim-style controls across Hyprland, Neovim, Vimium, and more

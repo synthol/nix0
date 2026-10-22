@@ -37,6 +37,14 @@ Active-window captures may include overlapping windows.
 | `Super+F` | Toggle fullscreen mode |
 | `Super+Shift+F` | Toggle maximised mode |
 
+## Layout
+
+| Shortcut | Action |
+|---|---|
+| `Super+S` | Toggle the scrolling layout on the active workspace |
+
+Workspaces start in the default layout after Hyprland restarts.
+
 ## Window focus
 
 | Shortcut | Alternative | Action |

@@ -6,6 +6,7 @@ local keycode = {
   j = "code:44",
   k = "code:45",
   l = "code:46",
+  s = "code:39",
   t = "code:28",
 }
 
@@ -23,6 +24,16 @@ hl.bind("ALT + SHIFT + Print", hl.dsp.exec_cmd([[geometry="$(hyprctl -j activewi
 hl.bind("SUPER + " .. keycode.c, hl.dsp.window.close())
 hl.bind("SUPER + " .. keycode.f, hl.dsp.window.fullscreen(), { dont_inhibit = true })
 hl.bind("SUPER + SHIFT + " .. keycode.f, hl.dsp.window.fullscreen({ mode = "maximized" }), { dont_inhibit = true })
+
+hl.bind("SUPER + " .. keycode.s, function()
+  local workspace = hl.get_active_workspace()
+  if not workspace then
+    return
+  end
+
+  local layout = workspace.tiled_layout == "scrolling" and hl.get_config("general.layout") or "scrolling"
+  hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
+end)
 
 hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }))
 hl.bind("SUPER + " .. keycode.h, hl.dsp.focus({ direction = "l" }))
