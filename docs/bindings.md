@@ -42,6 +42,7 @@ Active-window captures may include overlapping windows.
 | Shortcut | Action |
 |---|---|
 | `Super+S` | Toggle the scrolling layout on the active workspace |
+| `Super+R` | Cycle the active column width on scrolling workspaces |
 
 Workspaces start in the default layout after Hyprland restarts.
 

@@ -6,6 +6,7 @@ local keycode = {
   j = "code:44",
   k = "code:45",
   l = "code:46",
+  r = "code:27",
   s = "code:39",
   t = "code:28",
 }
@@ -33,6 +34,13 @@ hl.bind("SUPER + " .. keycode.s, function()
 
   local layout = workspace.tiled_layout == "scrolling" and hl.get_config("general.layout") or "scrolling"
   hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
+end)
+
+hl.bind("SUPER + " .. keycode.r, function()
+  local workspace = hl.get_active_workspace()
+  if workspace and workspace.tiled_layout == "scrolling" then
+    hl.dispatch(hl.dsp.layout("colresize +conf"))
+  end
 end)
 
 hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }))
