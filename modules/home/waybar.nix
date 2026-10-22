@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   colors = config.lib.stylix.colors.withHashtag;
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   jq = "${pkgs.jq}/bin/jq";
 in
 {

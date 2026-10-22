@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ osConfig, pkgs, ... }:
 let
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   lockSession = "${pkgs.systemd}/bin/loginctl lock-session";
   dpmsCommand = action: "${hyprctl} dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
 in
