@@ -26,6 +26,13 @@ hl.bind("SUPER + " .. keycode.c, hl.dsp.window.close())
 hl.bind("SUPER + " .. keycode.f, hl.dsp.window.fullscreen(), { dont_inhibit = true })
 hl.bind("SUPER + SHIFT + " .. keycode.f, hl.dsp.window.fullscreen({ mode = "maximized" }), { dont_inhibit = true })
 
+local function refresh_layout_indicator()
+  hl.dispatch(hl.dsp.exec_cmd("systemctl --user kill --kill-whom=main --signal=SIGRTMIN+8 waybar.service"))
+end
+
+hl.on("config.reloaded", refresh_layout_indicator)
+hl.on("workspace.active", refresh_layout_indicator)
+
 hl.bind("SUPER + " .. keycode.s, function()
   local workspace = hl.get_active_workspace()
   if not workspace then
@@ -34,6 +41,7 @@ hl.bind("SUPER + " .. keycode.s, function()
 
   local layout = workspace.tiled_layout == "scrolling" and hl.get_config("general.layout") or "scrolling"
   hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
+  refresh_layout_indicator()
 end)
 
 hl.bind("SUPER + " .. keycode.r, function()

@@ -1,6 +1,8 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   colors = config.lib.stylix.colors.withHashtag;
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  jq = "${pkgs.jq}/bin/jq";
 in
 {
   stylix.targets.waybar.enable = false;
@@ -18,7 +20,10 @@ in
       height = 26;
       passthrough = true;
 
-      modules-left = [ "hyprland/workspaces" ];
+      modules-left = [
+        "hyprland/workspaces"
+        "custom/layout"
+      ];
       modules-center = [ "clock" ];
       modules-right = [
         "pulseaudio"
@@ -29,6 +34,11 @@ in
       "hyprland/workspaces" = {
         format = "{name}";
         sort-by = "number";
+      };
+
+      "custom/layout" = {
+        exec = "{ ${hyprctl} -j monitors; ${hyprctl} -j workspaces; } | ${jq} -rs --arg output \"$WAYBAR_OUTPUT_NAME\" '(.[0][] | select(.name == $output) | .activeWorkspace.id) as $id | .[1][] | select(.id == $id) | .tiledLayout | ascii_upcase'";
+        signal = 8;
       };
 
       clock = {
@@ -94,6 +104,7 @@ in
         color: ${colors.base00};
       }
 
+      #custom-layout,
       #clock,
       #pulseaudio,
       #backlight,
