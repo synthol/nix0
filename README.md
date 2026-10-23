@@ -1,6 +1,6 @@
 <div align="center">
   <p>
-    <img src=".github/assets/logo.png" alt="nix0" width="220">
+    <img src=".github/assets/logo.png" alt="nix0" width="200">
   </p>
   <p>A minimal NixOS configuration built around Hyprland.</p>
   <p><strong><a href="docs/">Documentation</a></strong></p>
