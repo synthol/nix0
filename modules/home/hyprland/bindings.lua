@@ -6,6 +6,7 @@ local keycode = {
   j = "code:44",
   k = "code:45",
   l = "code:46",
+  m = "code:58",
   r = "code:27",
   s = "code:39",
   t = "code:28",
@@ -24,7 +25,7 @@ hl.bind("ALT + SHIFT + Print", hl.dsp.exec_cmd([[geometry="$(hyprctl -j activewi
 
 hl.bind("SUPER + " .. keycode.c, hl.dsp.window.close())
 hl.bind("SUPER + " .. keycode.f, hl.dsp.window.fullscreen(), { dont_inhibit = true })
-hl.bind("SUPER + SHIFT + " .. keycode.f, hl.dsp.window.fullscreen({ mode = "maximized" }), { dont_inhibit = true })
+hl.bind("SUPER + " .. keycode.m, hl.dsp.window.fullscreen({ mode = "maximized" }), { dont_inhibit = true })
 
 local function refresh_layout_indicator()
   hl.dispatch(hl.dsp.exec_cmd("systemctl --user kill --kill-whom=main --signal=SIGRTMIN+8 waybar.service"))

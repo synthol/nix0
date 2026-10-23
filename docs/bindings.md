@@ -35,7 +35,7 @@ Active-window captures may include overlapping windows.
 |---|---|
 | `Super+C` | Close the active window |
 | `Super+F` | Toggle fullscreen mode |
-| `Super+Shift+F` | Toggle maximised mode |
+| `Super+M` | Toggle maximised mode |
 
 ## Layout
 
