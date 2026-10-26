@@ -1,10 +1,18 @@
 {
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
+  boot = {
+    consoleLogLevel = 3;
+    kernelParams = [
+      "quiet"
+      "udev.log_level=3"
+    ];
 
-    systemd-boot = {
-      enable = true;
-      configurationLimit = 10;
+    loader = {
+      efi.canTouchEfiVariables = true;
+
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 10;
+      };
     };
   };
 }
