@@ -1,9 +1,9 @@
 # Battery limits
 
 Both battery options are disabled by default. Choose the method your hardware
-supports in [`settings.json`](../settings.json):
+supports in [`settings.json`](../settings.json).
 
-| Setting | Use |
+| Setting | Hardware |
 |---|---|
 | `battery.generic.enable` | Batteries exposing `/sys/class/power_supply/BAT*/charge_control_end_threshold` |
 | `battery.acerWmi.enable` | Acer laptops supported by [acer-wmi-battery](https://github.com/frederik-h/acer-wmi-battery/blob/main/MODELS.md) |
