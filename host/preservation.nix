@@ -17,6 +17,7 @@ in
     directories = [
       "/etc/nixos"
       (privateDirectory "/etc/NetworkManager/system-connections")
+      (privateDirectory "/var/db/sudo/lectured")
       "/var/lib/NetworkManager"
       (privateDirectory "/var/lib/bluetooth")
       "/var/lib/libvirt"
