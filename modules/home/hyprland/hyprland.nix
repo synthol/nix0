@@ -20,7 +20,7 @@ in
 
   programs.bash.profileExtra = ''
     if [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = "1" ]; then
-      exec start-hyprland
+      exec systemd-cat --identifier=hyprland start-hyprland
     fi
   '';
 
