@@ -26,7 +26,7 @@ application launcher and file manager. To reduce visual distractions, it uses
 a black background and disables blur, gaps, and animations.
 
 <p align="center">
-  <img src=".github/assets/screenshot.png" alt="Fastfetch, btop, cbonsai, and Neovim" width="100%">
+  <img src=".github/assets/screenshot.png" alt="Fastfetch, cbonsai, btop, and Neovim" width="100%">
 </p>
 
 ## Features
