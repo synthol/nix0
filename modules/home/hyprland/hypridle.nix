@@ -10,7 +10,7 @@ in
 
     settings = {
       general = {
-        lock_cmd = "${pkgs.procps}/bin/pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
+        lock_cmd = "${pkgs.procps}/bin/pidof swaylock || ${pkgs.swaylock}/bin/swaylock";
         before_sleep_cmd = lockSession;
         after_sleep_cmd = dpmsCommand "enable";
       };

@@ -7,6 +7,5 @@
     };
   };
 
-  security.pam.services.hyprlock = { };
   services.speechd.enable = false;
 }
