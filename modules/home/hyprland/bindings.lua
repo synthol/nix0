@@ -12,7 +12,7 @@ local keycode = {
   t = "code:28",
 }
 
-hl.bind("SUPER + " .. keycode.t, hl.dsp.exec_cmd("kitty"))
+hl.bind("SUPER + " .. keycode.t, hl.dsp.exec_cmd("foot"))
 hl.bind("SUPER + ALT + " .. keycode.l, hl.dsp.exec_cmd("hyprlock"))
 hl.bind("SUPER + " .. keycode.b, hl.dsp.exec_cmd("systemctl --user kill --kill-whom=main --signal=SIGUSR1 waybar.service"))
 

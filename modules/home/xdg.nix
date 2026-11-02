@@ -10,7 +10,7 @@
 
     terminal-exec = {
       enable = true;
-      settings.default = [ "kitty.desktop" ];
+      settings.default = [ "foot.desktop" ];
     };
 
     userDirs = {

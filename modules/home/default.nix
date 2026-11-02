@@ -5,9 +5,9 @@
     ./brave-origin.nix
     ./btop.nix
     ./fastfetch.nix
+    ./foot.nix
     ./git.nix
     ./hyprland
-    ./kitty.nix
     ./neovim.nix
     ./ssh.nix
     ./waybar.nix
