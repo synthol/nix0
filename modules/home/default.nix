@@ -10,6 +10,7 @@
     ./hyprland
     ./neovim.nix
     ./ssh.nix
+    ./swayidle.nix
     ./swaylock.nix
     ./waybar.nix
     ./xdg.nix
