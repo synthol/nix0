@@ -81,5 +81,5 @@ nmtui connect
 ```
 
 > [!TIP]
-> Run occasional tools with `nix run` or `nix shell` to keep the configuration
-> small.
+> Run occasional packages with `nix run` or `nix shell` to keep the
+> configuration small.
