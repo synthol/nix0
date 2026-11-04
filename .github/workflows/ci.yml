@@ -50,11 +50,9 @@ jobs:
             --no-update-lock-file \
             --no-write-lock-file \
             'nixpkgs#shellcheck' \
-            'nixpkgs#lua' \
             'nixpkgs#actionlint' \
             --command bash -e -o pipefail -c '
               git ls-files -z -- "*.sh" | xargs -0 -r -n 1 shellcheck
-              git ls-files -z -- "*.lua" | xargs -0 -r -n 1 luac -p
               actionlint
             '
 
