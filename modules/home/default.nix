@@ -7,9 +7,9 @@
     ./fastfetch.nix
     ./foot.nix
     ./git.nix
-    ./hyprland
     ./neovim.nix
     ./ssh.nix
+    ./sway.nix
     ./swayidle.nix
     ./swaylock.nix
     ./waybar.nix

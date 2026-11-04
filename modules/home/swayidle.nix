@@ -1,8 +1,7 @@
 { osConfig, pkgs, ... }:
 let
-  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   lockSession = "${pkgs.swaylock}/bin/swaylock -f";
-  dpmsCommand = action: "${hyprctl} dispatch 'hl.dsp.dpms({ action = \"${action}\" })'";
+  powerCommand = state: "${osConfig.programs.sway.package}/bin/swaymsg 'output * power ${state}'";
 in
 {
   services.swayidle = {
@@ -15,14 +14,14 @@ in
       }
       {
         timeout = 600;
-        command = dpmsCommand "disable";
-        resumeCommand = dpmsCommand "enable";
+        command = powerCommand "off";
+        resumeCommand = powerCommand "on";
       }
     ];
 
     events = {
       before-sleep = lockSession;
-      after-resume = dpmsCommand "enable";
+      after-resume = powerCommand "on";
       lock = lockSession;
     };
   };

@@ -2,7 +2,7 @@
   <p>
     <img src=".github/assets/logo.png" alt="nix0" width="200">
   </p>
-  <p>A minimal NixOS configuration built around Hyprland.</p>
+  <p>A minimal NixOS configuration built around Sway.</p>
   <p><strong><a href="docs/">Documentation</a></strong></p>
   <p>
     <a href="https://github.com/synthol/nix0/stargazers">
@@ -22,8 +22,7 @@
 
 nix0 is a keyboard-driven NixOS system you can use as is or extend. It centres
 on terminal workflows and omits common desktop components such as an
-application launcher and file manager. To reduce visual distractions, it uses
-a black background and disables blur, gaps, and animations.
+application launcher and file manager.
 
 <p align="center">
   <img src=".github/assets/screenshot.png" alt="Fastfetch, cbonsai, btop, and Neovim" width="100%">
@@ -31,10 +30,10 @@ a black background and disables blur, gaps, and animations.
 
 ## Features
 
-- **Desktop:** Preconfigured Hyprland with Waybar and optional scrolling layout
+- **Desktop:** Preconfigured Sway with Waybar
 - **Environment:** Declarative configuration through Home Manager
 - **Theming:** Coordinated styling through Stylix
-- **Navigation:** Vim-style controls across Hyprland, Neovim, Vimium, and more
+- **Navigation:** Vim-style controls across Sway, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
 - **Installation:** Guided installer with Gum and NixOS Facter
 - **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA profiles and GPU passthrough
@@ -69,7 +68,7 @@ To use a Linux virtual console, press `Ctrl+Alt+F3`.
 
 After installation, select **Power off now**. Once the computer is fully off,
 remove the installation media, then power it on. Unlock the disk with your
-encryption passphrase and log in; Hyprland starts automatically.
+encryption passphrase and log in; Sway starts automatically.
 Press `Super+T` to open a terminal.
 
 The installer does not configure NVIDIA automatically; see

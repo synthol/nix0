@@ -1,9 +1,5 @@
 {
   security.rtkit.enable = true;
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-  };
+  services.pipewire.extraConfig.pipewire.no-x11-bell."context.properties"."module.x11.bell" = false;
 }

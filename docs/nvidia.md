@@ -1,10 +1,10 @@
 # NVIDIA
 
-The installer does not configure NVIDIA automatically. If Hyprland cannot start,
+The installer does not configure NVIDIA automatically. If Sway cannot start,
 switch to TTY2 with `Ctrl+Alt+F2`, log in, and edit
 [`settings.json`](../settings.json) at `/etc/nixos/settings.json`.
 
-Hyprland starts automatically only on TTY1, so TTY2 provides a shell for setup.
+Sway starts automatically only on TTY1, so TTY2 provides a shell for setup.
 
 Set `hardwareProfiles.nvidia.enable` to `true` to enable the NVIDIA profile.
 Set `hardwareProfiles.nvidia.open` to `true` or `false`; leaving it `null`

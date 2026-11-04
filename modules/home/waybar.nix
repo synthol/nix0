@@ -1,13 +1,6 @@
-{
-  config,
-  osConfig,
-  pkgs,
-  ...
-}:
+{ config, ... }:
 let
   colors = config.lib.stylix.colors.withHashtag;
-  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
-  jq = "${pkgs.jq}/bin/jq";
 in
 {
   stylix.targets.waybar.enable = false;
@@ -15,36 +8,19 @@ in
   programs.waybar = {
     enable = true;
 
-    systemd = {
-      enable = true;
-      targets = [ "hyprland-session.target" ];
-    };
+    systemd.enable = true;
 
     settings.mainBar = {
       layer = "top";
       height = 26;
-      passthrough = true;
 
-      modules-left = [
-        "hyprland/workspaces"
-        "custom/layout"
-      ];
+      modules-left = [ "sway/workspaces" ];
       modules-center = [ "clock" ];
       modules-right = [
         "pulseaudio"
         "backlight"
         "battery"
       ];
-
-      "hyprland/workspaces" = {
-        format = "{name}";
-        sort-by = "number";
-      };
-
-      "custom/layout" = {
-        exec = "{ ${hyprctl} -j monitors; ${hyprctl} -j workspaces; } | ${jq} -rs --arg output \"$WAYBAR_OUTPUT_NAME\" '(.[0][] | select(.name == $output) | .activeWorkspace.id) as $id | .[1][] | select(.id == $id) | .tiledLayout | ascii_upcase'";
-        signal = 8;
-      };
 
       clock = {
         format = "{:%a %b %d %H:%M}";
@@ -98,7 +74,7 @@ in
         color: ${colors.base05};
       }
 
-      #workspaces button.active {
+      #workspaces button.focused {
         background: ${colors.base05};
         color: ${colors.base00};
         font-weight: bold;
@@ -109,7 +85,6 @@ in
         color: ${colors.base00};
       }
 
-      #custom-layout,
       #clock,
       #pulseaudio,
       #backlight,

@@ -1,7 +1,6 @@
 # Bindings
 
-Hyprland bindings are defined in
-[`bindings.lua`](../modules/home/hyprland/bindings.lua).
+Sway bindings are defined in [`sway.nix`](../modules/home/sway.nix).
 `Super` is the Windows/Meta key. Letter and workspace shortcuts use physical
 key positions corresponding to a US QWERTY keyboard, so their positions remain
 consistent across keyboard layouts.
@@ -16,18 +15,13 @@ consistent across keyboard layouts.
 
 ## Screenshots
 
-| Shortcut | Capture | Destination |
-|---|---|---|
-| `Print` | All displays | Pictures |
-| `Super+Print` | Selected region | Pictures |
-| `Shift+Print` | All displays | Clipboard |
-| `Super+Shift+Print` | Selected region | Clipboard |
-| `Alt+Print` | Active-window rectangle | Pictures |
-| `Alt+Shift+Print` | Active-window rectangle | Clipboard |
+| Shortcut | Capture |
+|---|---|
+| `Print` | All displays |
+| `Super+Print` | Selected region |
 
 Screenshots are saved to the XDG Pictures directory as
 `Screenshot-YYYYMMDD-HHMMSS-NNNNNNNNN.png`.
-Active-window captures may include overlapping windows.
 
 ## Window state
 
@@ -35,16 +29,8 @@ Active-window captures may include overlapping windows.
 |---|---|
 | `Super+C` | Close the active window |
 | `Super+F` | Toggle fullscreen mode |
-| `Super+M` | Toggle maximised mode |
-
-## Layout
-
-| Shortcut | Action |
-|---|---|
-| `Super+S` | Toggle the scrolling layout on the active workspace |
-| `Super+R` | Cycle the active column width on scrolling workspaces |
-
-Workspaces start in the default layout after Hyprland restarts.
+| `Super+S` | Toggle the split direction of the active window |
+| `Super+Shift+S` | Cancel the split of the active window |
 
 ## Window focus
 
@@ -75,14 +61,18 @@ Workspaces start in the default layout after Hyprland restarts.
 
 ## Window resizing
 
-| Shortcut | Alternative | Action |
-|---|---|---|
-| `Super+Ctrl+Left` | `Super+Ctrl+H` | Decrease width by 10 pixels |
-| `Super+Ctrl+Down` | `Super+Ctrl+J` | Increase height by 10 pixels |
-| `Super+Ctrl+Up` | `Super+Ctrl+K` | Decrease height by 10 pixels |
-| `Super+Ctrl+Right` | `Super+Ctrl+L` | Increase width by 10 pixels |
+Press `Super+R` to enter resize mode, then:
 
-Move and resize shortcuts repeat while held.
+| Key | Alternative | Action |
+|---|---|---|
+| `Left` | `H` | Decrease width by 10 pixels |
+| `Down` | `J` | Increase height by 10 pixels |
+| `Up` | `K` | Decrease height by 10 pixels |
+| `Right` | `L` | Increase width by 10 pixels |
+| `Enter` | `Esc` | Leave resize mode |
+
+The active window's border turns green while the mode is active. Move and resize
+keys repeat while held.
 
 ## Audio
 
@@ -117,8 +107,3 @@ Media controls use `playerctl` and work while locked.
 Brightness controls use `brightnessctl` with an exponential curve and minimum
 brightness protection. Both keys work while locked and repeat while held.
 Media and brightness keys may require `Fn`, depending on the keyboard.
-
-## Applying changes
-
-After editing bindings, follow [Hyprland changes](settings.md#hyprland-changes)
-to apply them.

@@ -25,16 +25,3 @@ sudo nixos-rebuild switch --flake 'path:/etc/nixos#nixos'
 
 Use `boot` and reboot for kernel, initrd, or boot-time driver changes, as
 described in the hardware guides.
-
-### Hyprland changes
-
-nix0 disables Hyprland's configuration autoreload. After editing files under
-[`modules/home/hyprland/`](../modules/home/hyprland/) in `/etc/nixos`,
-rebuild with `switch`, then run inside the Hyprland session:
-
-```sh
-hyprctl reload
-```
-
-This also applies to keyboard settings generated from `settings.json`.
-Restart the session when updating the compositor itself.

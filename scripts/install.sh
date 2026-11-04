@@ -127,7 +127,7 @@ cleanup() {
     printf '\n'
     print_text \
       'Unlock the disk with your encryption passphrase and log in.' \
-      'Hyprland starts automatically. Press Super+T to open a terminal.' \
+      'Sway starts automatically. Press Super+T to open a terminal.' \
       'If needed, run "nmtui connect" to connect to a network.'
     printf '\n'
 
