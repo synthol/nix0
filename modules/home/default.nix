@@ -11,8 +11,8 @@
     ./ssh.nix
     ./sway.nix
     ./swayidle.nix
+    ./swaybar.nix
     ./swaylock.nix
-    ./waybar.nix
     ./xdg.nix
   ];
 }

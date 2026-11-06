@@ -30,7 +30,7 @@ application launcher and file manager.
 
 ## Features
 
-- **Desktop:** Preconfigured Sway with Waybar
+- **Desktop:** Preconfigured Sway with Swaybar and i3status
 - **Environment:** Declarative configuration through Home Manager
 - **Theming:** Coordinated styling through Stylix
 - **Navigation:** Vim-style controls across Sway, Neovim, Vimium, and more

@@ -11,11 +11,6 @@ let
 
   screenshotFile = ''"$(xdg-user-dir PICTURES)/Screenshot-$(date +%Y%m%d-%H%M%S-%N).png"'';
 
-  focusedBorder =
-    color: "client.focused ${color} ${colors.base00} ${colors.base05} ${colors.base0B} ${color}";
-  enterResize = ''mode "resize"; ${focusedBorder colors.base0B}'';
-  leaveResize = ''mode "default"; ${focusedBorder colors.base05}'';
-
   windowColors = color: {
     border = lib.mkForce color;
     childBorder = lib.mkForce color;
@@ -66,14 +61,13 @@ in
         bindsym Down resize grow height 10 px
         bindsym Up resize shrink height 10 px
         bindsym Right resize grow width 10 px
-        bindsym Return ${leaveResize}
-        bindsym Escape ${leaveResize}
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
       }
     '';
 
     config = {
       modifier = "Mod4";
-      bars = [ ];
       modes = { };
 
       focus = {
@@ -112,14 +106,13 @@ in
       keycodebindings = workspaceBindings // {
         "--no-repeat Mod4+28" = "exec foot";
         "--no-repeat Mod4+Mod1+46" = "exec swaylock";
-        "--no-repeat Mod4+56" =
-          "exec systemctl --user kill --kill-whom=main --signal=SIGUSR1 waybar.service";
+        "--no-repeat Mod4+56" = "bar mode toggle";
 
         "--no-repeat Mod4+54" = "kill";
         "--no-repeat --inhibited Mod4+41" = "fullscreen toggle";
         "--no-repeat Mod4+39" = "split toggle";
         "--no-repeat Mod4+Shift+39" = "split none";
-        "--no-repeat Mod4+27" = enterResize;
+        "--no-repeat Mod4+27" = ''mode "resize"'';
 
         "--no-repeat Mod4+43" = "focus left";
         "--no-repeat Mod4+44" = "focus down";

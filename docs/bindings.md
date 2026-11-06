@@ -71,8 +71,8 @@ Press `Super+R` to enter resize mode, then:
 | `Right` | `L` | Increase width by 10 pixels |
 | `Enter` | `Esc` | Leave resize mode |
 
-The active window's border turns green while the mode is active. Move and resize
-keys repeat while held.
+The status bar shows `resize` while the mode is active. Move and resize keys
+repeat while held.
 
 ## Audio
 
