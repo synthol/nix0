@@ -6,7 +6,49 @@
     enable = true;
     defaultEditor = true;
 
-    plugins = [ pkgs.vimPlugins.nvim-treesitter.withAllGrammars ];
+    plugins = [
+      (pkgs.vimPlugins.nvim-treesitter.withPlugins (
+        grammars: with grammars; [
+          bash
+          c
+          c_sharp
+          comment
+          cpp
+          css
+          diff
+          doxygen
+          git_rebase
+          gitcommit
+          go
+          html
+          java
+          javadoc
+          javascript
+          jsdoc
+          json
+          lua
+          luadoc
+          luap
+          markdown
+          markdown_inline
+          nix
+          php
+          phpdoc
+          printf
+          python
+          query
+          regex
+          rust
+          sql
+          toml
+          tsx
+          typescript
+          vim
+          vimdoc
+          yaml
+        ]
+      ))
+    ];
 
     initLua = ''
       vim.opt.tabstop = 2
