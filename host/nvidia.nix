@@ -18,7 +18,6 @@ lib.mkIf enabled {
   services.xserver.videoDrivers = [ "nvidia" ];
 
   environment.sessionVariables = lib.mkIf (lib.elem "nvidia" config.services.xserver.videoDrivers) {
-    __GLX_VENDOR_LIBRARY_NAME = lib.mkIf (!offloadEnabled) "nvidia";
     LIBVA_DRIVER_NAME = lib.mkIf (cfg.forceVaapiDriver or false) "nvidia";
     SWAY_UNSUPPORTED_GPU = "true";
   };
