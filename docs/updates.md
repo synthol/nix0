@@ -1,7 +1,5 @@
 # Updates
 
-## Replace configuration
-
 Download and extract the desired [nix0 release](https://github.com/synthol/nix0/releases).
 Choose a newer release to update, or the currently installed release to
 discard local configuration changes.
@@ -22,8 +20,6 @@ This retains settings, the hardware report, and `.git` directories. Other
 configuration files are replaced and extra files deleted. Compare your
 [`settings.json`](../settings.json) with the release's defaults and incorporate any required changes;
 settings are not merged automatically. Persistent data and passwords are unchanged.
-
-## Applying changes
 
 Rebuild with `boot`, adding `--no-update-lock-file --no-write-lock-file`
 to retain the release's pinned dependencies, then reboot.
