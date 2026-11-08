@@ -359,10 +359,10 @@ default_xkb_layout=$(read_setting '.xkbLayout')
 jq --exit-status '
   (.battery | type == "object")
   and (.git | type == "object")
-  and (.hardwareProfiles | type == "object")
+  and (.nvidia | type == "object")
   and (.virtualisation | type == "object")
 ' "$settings_file" >/dev/null ||
-  die "settings.json battery, git, hardwareProfiles, and virtualisation must be objects"
+  die "settings.json battery, git, nvidia, and virtualisation must be objects"
 
 xkb_variant=$(read_setting '.xkbVariant')
 

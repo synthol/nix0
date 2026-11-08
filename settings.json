@@ -19,23 +19,21 @@
       "enable": false
     }
   },
-  "hardwareProfiles": {
-    "nvidia": {
+  "nvidia": {
+    "enable": false,
+    "branch": "stable",
+    "open": null,
+    "forceVaapiDriver": false,
+    "powerManagement": {
       "enable": false,
-      "branch": "stable",
-      "open": null,
-      "forceVaapiDriver": false,
-      "powerManagement": {
-        "enable": false,
-        "finegrained": false
-      },
-      "prime": {
-        "intelBusId": "",
-        "amdgpuBusId": "",
-        "nvidiaBusId": "",
-        "offload": {
-          "enable": false
-        }
+      "finegrained": false
+    },
+    "prime": {
+      "intelBusId": "",
+      "amdgpuBusId": "",
+      "nvidiaBusId": "",
+      "offload": {
+        "enable": false
       }
     }
   },

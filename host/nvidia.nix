@@ -5,8 +5,7 @@
   ...
 }:
 let
-  profiles = settings.hardwareProfiles or { };
-  cfg = profiles.nvidia or { };
+  cfg = settings.nvidia or { };
   powerCfg = cfg.powerManagement or { };
   primeCfg = cfg.prime or { };
   offloadCfg = primeCfg.offload or { };

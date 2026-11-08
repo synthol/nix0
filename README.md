@@ -36,7 +36,7 @@ application launcher and file manager.
 - **Navigation:** Vim-style controls across Sway, Neovim, Vimium, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
 - **Installation:** Guided installer with Gum and NixOS Facter
-- **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA profiles and virtualisation
+- **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA and virtualisation
 
 ## Installation
 
