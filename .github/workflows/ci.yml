@@ -16,7 +16,7 @@ jobs:
   check:
     name: Validate
     runs-on: ubuntu-24.04
-    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 90 || 30 }}
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -99,7 +99,6 @@ jobs:
           done
 
       - name: Build system
-        if: github.event_name == 'workflow_dispatch'
         run: |
           nix build \
             --no-link \
