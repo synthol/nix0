@@ -48,8 +48,8 @@ application launcher and file manager.
 - A dedicated disk of at least 32 GiB
 
 > [!NOTE]
-> The installer only lists disks with `/dev/disk/by-id` identifiers. Some
-> virtual machine disks have none by default; set a serial number on the disk.
+> The installer only lists disks with `/dev/disk/by-id` identifiers; virtual
+> disks may need a serial number.
 
 > [!WARNING]
 > The installer erases the selected disk after displaying its identity and
