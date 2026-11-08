@@ -20,9 +20,8 @@
   </p>
 </div>
 
-nix0 is a keyboard-driven NixOS system you can use as is or extend. It centres
-on terminal workflows and omits common desktop components such as an
-application launcher and file manager.
+nix0 is a keyboard-driven NixOS setup focused on terminal workflows. It leaves
+out common desktop components such as an application launcher and file manager.
 
 <p align="center">
   <img src=".github/assets/screenshot.png" alt="Fastfetch, cbonsai, btop, and Neovim" width="100%">
