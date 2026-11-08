@@ -1,4 +1,9 @@
-{ settings, ... }:
+{
+  config,
+  lib,
+  settings,
+  ...
+}:
 {
   users = {
     mutableUsers = false;
@@ -8,10 +13,10 @@
       hashedPasswordFile = "/persist/passwords/${settings.username}";
 
       extraGroups = [
-        "libvirtd"
         "networkmanager"
         "wheel"
-      ];
+      ]
+      ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
     };
   };
 }

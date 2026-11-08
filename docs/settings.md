@@ -13,7 +13,8 @@ the installer fills in disk, account, and regional values from your choices.
 | `allowDiscards` | LUKS discard/TRIM support; rebuild with `boot` and reboot |
 | [`battery.*`](battery-limits.md) | 80% battery charge limit |
 | [`hardwareProfiles.nvidia.*`](nvidia.md) | NVIDIA drivers, power management, PRIME offload, and VA-API backend selection |
-| [`gpuPassthrough.*`](gpu-passthrough.md) | GPU passthrough and optional Looking Glass |
+| `virtualisation.enable` | libvirt/QEMU/KVM with virt-manager; disabling keeps existing VMs and their disk usage in `/persist/var/lib/libvirt` |
+| [`virtualisation.gpuPassthrough.*`](gpu-passthrough.md) | GPU passthrough and optional Looking Glass; requires `virtualisation.enable` |
 
 ## Applying changes
 

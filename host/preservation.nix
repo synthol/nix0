@@ -1,4 +1,9 @@
-{ settings, ... }:
+{
+  config,
+  lib,
+  settings,
+  ...
+}:
 let
   privateDirectory = directory: {
     inherit directory;
@@ -20,7 +25,6 @@ in
       (privateDirectory "/var/db/sudo/lectured")
       "/var/lib/NetworkManager"
       (privateDirectory "/var/lib/bluetooth")
-      "/var/lib/libvirt"
       (initrdDirectory "/var/lib/nixos")
       (initrdDirectory "/var/lib/systemd")
       {
@@ -28,7 +32,8 @@ in
         group = "systemd-journal";
         mode = "2755";
       }
-    ];
+    ]
+    ++ lib.optional config.virtualisation.libvirtd.enable "/var/lib/libvirt";
 
     files = [
       {

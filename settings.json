@@ -39,12 +39,15 @@
       }
     }
   },
-  "gpuPassthrough": {
+  "virtualisation": {
     "enable": false,
-    "pciAddresses": [],
-    "lookingGlass": {
+    "gpuPassthrough": {
       "enable": false,
-      "memoryMiB": 64
+      "pciAddresses": [],
+      "lookingGlass": {
+        "enable": false,
+        "memoryMiB": 64
+      }
     }
   }
 }

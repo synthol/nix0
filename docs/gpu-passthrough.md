@@ -26,22 +26,23 @@ The boot-menu edit is temporary and does not bind devices to VFIO. If groups
 are still unavailable, resolve firmware/kernel IOMMU detection before
 continuing; check the boot journal with `sudo journalctl -k -b`.
 
-Set `gpuPassthrough.enable` to `true` in [`settings.json`](../settings.json)
-and copy the selected group's endpoint
-addresses into `gpuPassthrough.pciAddresses`. Use the original hexadecimal
-addresses, such as `0000:01:00.0`, rather than PRIME's converted format.
+Set `virtualisation.enable` and `virtualisation.gpuPassthrough.enable` to
+`true` in [`settings.json`](../settings.json) and copy the selected group's
+endpoint addresses into `virtualisation.gpuPassthrough.pciAddresses`. Use the
+original hexadecimal addresses, such as `0000:01:00.0`, rather than PRIME's
+converted format.
 Review every selected device: the group may contain audio or other devices
 that will also become unavailable to the host. Do not include PCI bridges.
 
 ## Looking Glass
 
-Set `gpuPassthrough.lookingGlass.enable` to `true` to add the client and shared
-memory support. GPU passthrough must also be enabled. The default
-`gpuPassthrough.lookingGlass.memoryMiB` is `64`; supported sizes are `32`, `64`,
-`128`, `256`, `512`, and `1024` MiB.
+Set `virtualisation.gpuPassthrough.lookingGlass.enable` to `true` to add the
+client and shared memory support. GPU passthrough must also be enabled. The
+default `virtualisation.gpuPassthrough.lookingGlass.memoryMiB` is `64`;
+supported sizes are `32`, `64`, `128`, `256`, `512`, and `1024` MiB.
 
 nix0 supplies KVMFR at `/dev/kvmfr0`. The VM's shared-memory size must match
-`gpuPassthrough.lookingGlass.memoryMiB`. Follow the
+`virtualisation.gpuPassthrough.lookingGlass.memoryMiB`. Follow the
 [Looking Glass B7 KVMFR documentation](https://looking-glass.io/docs/B7/ivshmem_kvmfr/#libvirt)
 for VM configuration.
 See the [Looking Glass B7 documentation](https://looking-glass.io/docs/B7/)

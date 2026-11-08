@@ -168,7 +168,7 @@ for address in "${gpu_addresses[@]}"; do
       "$member_address" "$member_kind" "$member_driver" "$member_description"
   done
 
-  printf '    gpuPassthrough.pciAddresses: '
+  printf '    virtualisation.gpuPassthrough.pciAddresses: '
   print_json_array "${passthrough_addresses[@]}"
   printf '\n'
 

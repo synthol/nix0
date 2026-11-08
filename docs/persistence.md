@@ -10,7 +10,7 @@ is preserved under `/persist` by
 | `/nix` | Packages, the Nix database, and system generations survive |
 | `/etc/nixos` | Configuration files survive |
 | Network connections, Bluetooth state, and system journal | Preserved by the configured system paths |
-| `/var/lib/libvirt` | libvirt state and VM disks stored here survive; other disk locations need their own persistence |
+| `/var/lib/libvirt` | With virtualisation enabled, libvirt state and VM disks stored here survive; other disk locations need their own persistence |
 | `/persist/passwords` | Installer-created login password hashes survive |
 | Desktop, Documents, Downloads, Music, Pictures, Projects, Public, Templates, Videos | Preserved home directories |
 | `.ssh` and `.local/state/wireplumber` | Preserved home state |

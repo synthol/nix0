@@ -6,7 +6,10 @@
   ...
 }:
 let
-  cfg = settings.gpuPassthrough or { };
+  virtualisationCfg = settings.virtualisation or { };
+  virtualisationEnabled = virtualisationCfg.enable or false;
+
+  cfg = virtualisationCfg.gpuPassthrough or { };
   passthroughEnabled = cfg.enable or false;
 
   lookingGlass = cfg.lookingGlass or { };
@@ -217,8 +220,12 @@ in
 {
   assertions = [
     {
+      assertion = !passthroughEnabled || virtualisationEnabled;
+      message = "virtualisation.gpuPassthrough.enable requires virtualisation.enable.";
+    }
+    {
       assertion = !lookingGlassEnabled || passthroughEnabled;
-      message = "gpuPassthrough.lookingGlass.enable requires gpuPassthrough.enable.";
+      message = "virtualisation.gpuPassthrough.lookingGlass.enable requires virtualisation.gpuPassthrough.enable.";
     }
   ]
   ++ lib.optionals passthroughEnabled [
@@ -228,12 +235,12 @@ in
     }
     {
       assertion = pciAddresses != [ ];
-      message = "gpuPassthrough.pciAddresses must not be empty when GPU passthrough is enabled.";
+      message = "virtualisation.gpuPassthrough.pciAddresses must not be empty when GPU passthrough is enabled.";
     }
     {
       assertion = invalidPciAddresses == [ ];
       message = ''
-        gpuPassthrough.pciAddresses entries must use domain:bus:device.function form.
+        virtualisation.gpuPassthrough.pciAddresses entries must use domain:bus:device.function form.
         Example: "0000:01:00.0".
         Invalid values: ${lib.concatStringsSep ", " invalidPciAddresses}
       '';
@@ -241,13 +248,13 @@ in
     {
       assertion = missingPciAddresses == [ ];
       message = ''
-        Facter did not detect these gpuPassthrough.pciAddresses entries:
+        Facter did not detect these virtualisation.gpuPassthrough.pciAddresses entries:
         ${lib.concatStringsSep ", " missingPciAddresses}
       '';
     }
     {
       assertion = selectedGraphics != [ ];
-      message = "gpuPassthrough.pciAddresses must select at least one graphics device.";
+      message = "virtualisation.gpuPassthrough.pciAddresses must select at least one graphics device.";
     }
     {
       assertion = remainingGraphics != [ ];
@@ -256,7 +263,7 @@ in
     {
       assertion = selectedBridges == [ ];
       message = ''
-        gpuPassthrough.pciAddresses must not include PCI bridges.
+        virtualisation.gpuPassthrough.pciAddresses must not include PCI bridges.
         Remove: ${lib.concatStringsSep ", " (map pciAddressOf selectedBridges)}
 
         Driverless PCI bridges in the selected IOMMU group are handled automatically.
@@ -267,13 +274,9 @@ in
       message = "Facter did not detect Intel VMX or AMD SVM CPU support.";
     }
     {
-      assertion = config.virtualisation.libvirtd.enable;
-      message = "GPU passthrough requires virtualisation.libvirtd.enable.";
-    }
-    {
       assertion = !lookingGlassEnabled || lib.elem lookingGlassMemoryMiB lookingGlassMemorySizes;
       message = ''
-        gpuPassthrough.lookingGlass.memoryMiB must use a supported power-of-two size:
+        virtualisation.gpuPassthrough.lookingGlass.memoryMiB must use a supported power-of-two size:
         ${lib.concatStringsSep ", " (map toString lookingGlassMemorySizes)}
       '';
     }
