@@ -75,8 +75,6 @@ in
         wrapping = "yes";
       };
 
-      seat."*".hide_cursor = "when-typing enable";
-
       window = {
         border = 1;
         titlebar = false;
