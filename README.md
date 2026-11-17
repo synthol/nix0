@@ -32,7 +32,7 @@ out common desktop components such as an application launcher and file manager.
 - **Desktop:** Preconfigured Sway with Swaybar and i3status
 - **Environment:** Declarative configuration through Home Manager
 - **Theming:** Coordinated styling through Stylix
-- **Navigation:** Vim-style controls across Sway, Neovim, Vimium, and more
+- **Navigation:** Vim-style controls across Sway, Neovim, qutebrowser, and more
 - **Storage:** Disko-managed GPT, LUKS, Btrfs, and an ephemeral root with preserved state
 - **Installation:** Guided installer with Gum and NixOS Facter
 - **Configuration:** Post-install settings through [`settings.json`](docs/settings.md), including NVIDIA and virtualisation

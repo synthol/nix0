@@ -5,7 +5,8 @@
 
     mimeApps = {
       enable = true;
-      defaultApplicationPackages = [ config.programs.brave-origin.finalPackage ];
+      defaultApplicationPackages = [ config.programs.qutebrowser.package ];
+      defaultApplications."application/pdf" = "org.qutebrowser.qutebrowser.desktop";
     };
 
     terminal-exec = {

@@ -44,7 +44,8 @@ in
     ];
 
     users.${settings.username}.directories = [
-      (privateDirectory ".config/BraveSoftware/Brave-Origin")
+      (privateDirectory ".config/qutebrowser")
+      (privateDirectory ".local/share/qutebrowser")
       (privateDirectory ".local/state/wireplumber")
       (privateDirectory ".ssh")
       "Desktop"

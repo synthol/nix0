@@ -2,12 +2,12 @@
   imports = [
     ./appearance.nix
     ./bash.nix
-    ./brave-origin.nix
     ./btop.nix
     ./fastfetch.nix
     ./foot.nix
     ./git.nix
     ./neovim.nix
+    ./qutebrowser.nix
     ./ssh.nix
     ./sway.nix
     ./swayidle.nix
