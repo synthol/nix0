@@ -5,7 +5,7 @@ Sway bindings are defined in [`sway.nix`](../modules/home/sway.nix).
 key positions corresponding to a US QWERTY keyboard, so their positions remain
 consistent across keyboard layouts.
 
-## Applications and session
+## General
 
 | Shortcut | Action |
 |---|---|
@@ -15,10 +15,10 @@ consistent across keyboard layouts.
 
 ## Screenshots
 
-| Shortcut | Capture |
+| Shortcut | Action |
 |---|---|
-| `Print` | All displays |
-| `Super+Print` | Selected region |
+| `Print` | Capture all displays |
+| `Super+Print` | Capture a selected region |
 
 Screenshots are saved to the XDG Pictures directory as
 `Screenshot-YYYYMMDD-HHMMSS-NNNNNNNNN.png`.
@@ -32,6 +32,8 @@ Screenshots are saved to the XDG Pictures directory as
 | `Super+S` | Toggle the split direction of the active window |
 | `Super+Shift+S` | Cancel the split of the active window |
 
+`Super+F` works even while an application captures the keyboard.
+
 ## Window focus
 
 | Shortcut | Alternative | Action |
@@ -41,15 +43,6 @@ Screenshots are saved to the XDG Pictures directory as
 | `Super+Up` | `Super+K` | Focus the window above |
 | `Super+Right` | `Super+L` | Focus the window to the right |
 
-## Workspaces
-
-| Shortcut | Action |
-|---|---|
-| `Super+1` through `Super+9` | Focus the corresponding workspace |
-| `Super+0` | Focus workspace 10 |
-| `Super+Shift+1` through `Super+Shift+9` | Move the active window to the corresponding workspace without switching workspaces |
-| `Super+Shift+0` | Move the active window to workspace 10 without switching workspaces |
-
 ## Window movement
 
 | Shortcut | Alternative | Action |
@@ -58,6 +51,8 @@ Screenshots are saved to the XDG Pictures directory as
 | `Super+Shift+Down` | `Super+Shift+J` | Move the active window down |
 | `Super+Shift+Up` | `Super+Shift+K` | Move the active window up |
 | `Super+Shift+Right` | `Super+Shift+L` | Move the active window right |
+
+These keys repeat while held.
 
 ## Window resizing
 
@@ -71,10 +66,17 @@ Press `Super+R` to enter resize mode, then:
 | `Right` | `L` | Increase width by 10 pixels |
 | `Enter` | `Esc` | Leave resize mode |
 
-The status bar shows `resize` while the mode is active. Move and resize keys
-repeat while held.
+The status bar shows `resize` while the mode is active, and the keys repeat
+while held.
 
-## Audio
+## Workspaces
+
+| Shortcut | Action |
+|---|---|
+| `Super+1` through `Super+0` | Focus workspaces 1 through 10 |
+| `Super+Shift+1` through `Super+Shift+0` | Move the active window to workspaces 1 through 10 without following it |
+
+## Media keys
 
 | Key | Action |
 |---|---|
@@ -82,28 +84,12 @@ repeat while held.
 | Volume down (`XF86AudioLowerVolume`) | Decrease output volume by 5% |
 | Mute (`XF86AudioMute`) | Toggle output mute |
 | Microphone mute (`XF86AudioMicMute`) | Toggle microphone mute |
-
-Audio controls target the default PipeWire devices. These keys work while
-locked; volume keys repeat while held.
-
-## Media
-
-| Key | Action |
-|---|---|
 | Previous (`XF86AudioPrev`) | Go to the previous track |
 | Play (`XF86AudioPlay`) | Toggle playback |
 | Pause (`XF86AudioPause`) | Toggle playback |
 | Next (`XF86AudioNext`) | Go to the next track |
-
-Media controls use `playerctl` and work while locked.
-
-## Brightness
-
-| Key | Action |
-|---|---|
 | Brightness up (`XF86MonBrightnessUp`) | Increase brightness |
 | Brightness down (`XF86MonBrightnessDown`) | Decrease brightness |
 
-Brightness controls use `brightnessctl` with an exponential curve and minimum
-brightness protection. Both keys work while locked and repeat while held.
-Media and brightness keys may require `Fn`, depending on the keyboard.
+These keys work while locked and may require `Fn`, depending on the keyboard.
+Volume and brightness keys repeat while held.
