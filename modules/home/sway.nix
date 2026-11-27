@@ -145,6 +145,7 @@ in
         "--locked --no-repeat XF86AudioPrev" = "exec playerctl previous";
         "--locked --no-repeat XF86AudioPlay" = "exec playerctl play-pause";
         "--locked --no-repeat XF86AudioPause" = "exec playerctl play-pause";
+        "--locked --no-repeat XF86AudioStop" = "exec playerctl stop";
         "--locked --no-repeat XF86AudioNext" = "exec playerctl next";
 
         "--locked XF86MonBrightnessUp" = "exec brightnessctl -e4 -n2 set 5%+";

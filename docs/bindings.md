@@ -87,6 +87,7 @@ while held.
 | Previous (`XF86AudioPrev`) | Go to the previous track |
 | Play (`XF86AudioPlay`) | Toggle playback |
 | Pause (`XF86AudioPause`) | Toggle playback |
+| Stop (`XF86AudioStop`) | Stop playback |
 | Next (`XF86AudioNext`) | Go to the next track |
 | Brightness up (`XF86MonBrightnessUp`) | Increase brightness |
 | Brightness down (`XF86MonBrightnessDown`) | Decrease brightness |
