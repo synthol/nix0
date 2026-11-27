@@ -71,7 +71,7 @@ To use a Linux virtual console, press `Ctrl+Alt+F3`.
 After installation, select **Power off now**. Once the computer is fully off,
 remove the installation media, then power it on. Unlock the disk with your
 encryption passphrase and log in; Sway starts automatically.
-Press `Super+T` to open a terminal.
+Press `Super+T` to open Foot.
 
 The installer does not configure NVIDIA automatically; see
 [NVIDIA](docs/nvidia.md) for setup.

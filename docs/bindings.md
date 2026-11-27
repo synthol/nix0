@@ -9,9 +9,9 @@ consistent across keyboard layouts.
 
 | Shortcut | Action |
 |---|---|
-| `Super+T` | Open a terminal |
+| `Super+T` | Open Foot |
 | `Super+Alt+L` | Lock the session |
-| `Super+B` | Toggle the status bar |
+| `Super+B` | Toggle Swaybar |
 
 ## Screenshots
 
@@ -66,7 +66,7 @@ Press `Super+R` to enter resize mode, then:
 | `Right` | `L` | Increase width by 10 pixels |
 | `Enter` | `Esc` | Leave resize mode |
 
-The status bar shows `resize` while the mode is active, and the keys repeat
+Swaybar shows `resize` while the mode is active, and the keys repeat
 while held.
 
 ## Workspaces
